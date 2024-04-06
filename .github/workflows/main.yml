@@ -185,7 +185,7 @@ jobs:
         id: render-db-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ steps.render-db-task-def.outputs.task-definition }}
+          task-definition: ${{ steps.render-api-task-def.outputs.task-definition }}
           container-name: db
           image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_DB_SERVER_REPOSITORY }}
 ## Deploy
