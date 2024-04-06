@@ -3,17 +3,18 @@ FROM node:18 AS base
 CMD [ "bash" ]
 
 # Build
-FROM base AS build
+FROM base AS test-and-build
 COPY . /workspace
 WORKDIR /workspace
 ARG NEXT_PUBLIC_API_SERVER
 ENV NEXT_PUBLIC_API_SERVER=${NEXT_PUBLIC_API_SERVER}
 RUN npm ci
+RUN npm run test
 RUN npm run build
 
 # Production stage
 FROM node:18 AS production
-COPY --from=build /workspace ./
+COPY --from=test-and-build /workspace ./
 CMD ["npm", "run", "start"]
 
 
