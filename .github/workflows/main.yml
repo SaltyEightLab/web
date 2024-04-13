@@ -99,55 +99,13 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
 
-# DB Container Build
-## Get Source
-## Build/Test
-## Docker Image Build
-  # APIコンテナのテストとビルドを行うジョブ
-  db-test-build-image:
-    name: DB Container - Test and Build  # ジョブ名
-    runs-on: ubuntu-20.04  # ジョブを実行する仮想環境のOSを指定
-    timeout-minutes: 10  # タイムアウトを10分に設定
-    defaults:  # デフォルト設定
-      run:
-        working-directory: db  # デフォルトの作業ディレクトリを'api'に指定
-  
-    steps:  # ジョブで実行するステップを定義
-      - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
-
-      - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
-        run: |
-          docker image build -t temp_db_image_name:latest .
-
-      - name: Configure AWS credentials  # AWSの認証情報を設定
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWSアクセスキーID
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWSシークレットアクセスキー
-          aws-region: ${{ env.AWS_REGION }}  # AWSのリージョンを設定
-
-## Login AWS
-      - name: Login to Amazon ECR  # Amazon ECRにログイン
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1  # Amazon ECRログイン用のActionを使用
-
-## push image to ECR
-      - name: Push the image to Amazon ECR  # ビルドしたDockerイメージをAmazon ECRにプッシュ
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}  # ECRのレジストリURL
-          ECR_REPOSITORY: ${{ secrets.AWS_ECR_DB_SERVER_REPOSITORY }}  # ECRのリポジトリ名
-        run: |
-          docker image tag temp_db_image_name:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-
-# Deploy
+          # Deploy
 ## Get Source
 ## Login AWS
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04 
-    needs: [web-test-build-image, api-test-build-image, db-test-build-image]
+    needs: [web-test-build-image, api-test-build-image]
 
     steps:
       - name: Checkout
@@ -181,18 +139,11 @@ jobs:
           container-name: api
           image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_API_SERVER_REPOSITORY }}
 
-      - name: Fill in the new image ID in the Amazon ECS task definition for db
-        id: render-db-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ steps.render-api-task-def.outputs.task-definition }}
-          container-name: db
-          image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_DB_SERVER_REPOSITORY }}
 ## Deploy
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.render-db-task-def.outputs.task-definition }}
+          task-definition: ${{ steps.render-api-task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
