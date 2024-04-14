@@ -30,10 +30,19 @@ jobs:
     
     steps:  # ジョブで実行するステップを定義
       - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
+      
+      - name: Set API Server Environment Variable
+        id: set-api-server
+        run: |
+          echo "NEXT_PUBLIC_API_SERVER=$(aws servicediscovery discover-instances --namespace-id ns-glrt4v4mvthga5tj --service-name sacicd-service --query 'Instances[0].Attributes.AWS_INSTANCE_IPV4' --output text):8080" >> $GITHUB_ENV
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
 
       - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
         run: |
-          docker image build --target production -t temp_web_image_name:latest --build-arg NEXT_PUBLIC_API_SERVER=/api .
+          docker image build --target production -t temp_web_image_name:latest NEXT_PUBLIC_API_SERVER=${{ env.NEXT_PUBLIC_API_SERVER }} .
 
 ## Login AWS
       - name: Configure AWS credentials  # AWSの認証情報を設定
@@ -148,6 +157,12 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
-#test
+      - name: Update ECS Service with Service Discovery
+        run: |
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --service-registries "registryArn=arn:aws:servicediscovery:ap-northeast-1:637423198676:service/sacicd-service" --force-new-deployment
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ env.AWS_REGION }}
 
 
