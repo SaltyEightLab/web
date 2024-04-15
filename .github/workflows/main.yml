@@ -21,7 +21,7 @@ jobs:
 ## Build/Test
 ## Docker Image Build
   web-test-build-image:
-    name: Web Container - Test and Build  # ジョブ名
+    name: Web Container - Test and Build
     runs-on: ubuntu-20.04  # ジョブを実行する仮想環境のOSを指定
     timeout-minutes: 10  # タイムアウトを10分に設定
     defaults:  # デフォルト設定
