@@ -6,8 +6,6 @@ CMD [ "bash" ]
 FROM base AS test-and-build
 COPY . /workspace
 WORKDIR /workspace
-ARG NEXT_PUBLIC_API_SERVER
-ENV NEXT_PUBLIC_API_SERVER=${NEXT_PUBLIC_API_SERVER}
 RUN npm ci
 RUN npm run test
 RUN npm run build

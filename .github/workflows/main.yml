@@ -21,7 +21,7 @@ jobs:
 ## Build/Test
 ## Docker Image Build
   web-test-build-image:
-    name: Web Container - Test and Build
+    name: Web Container - Test and Build  # ジョブ名
     runs-on: ubuntu-20.04  # ジョブを実行する仮想環境のOSを指定
     timeout-minutes: 10  # タイムアウトを10分に設定
     defaults:  # デフォルト設定
@@ -30,10 +30,10 @@ jobs:
     
     steps:  # ジョブで実行するステップを定義
       - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
-
+      
       - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
         run: |
-          docker image build --target production -t temp_web_image_name:latest --build-arg NEXT_PUBLIC_API_SERVER=localhost:8080 .
+          docker image build --target production -t temp_web_image_name:latest --build-arg NEXT_PUBLIC_API_SERVER=api .
 
 ## Login AWS
       - name: Configure AWS credentials  # AWSの認証情報を設定
@@ -147,13 +147,4 @@ jobs:
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
-
-      - name: Update ECS Service with Service Discovery
-        run: |
-          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --service-registries "registryArn=arn:aws:servicediscovery:ap-northeast-1:637423198676:service/sacicd-service" --force-new-deployment
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ env.AWS_REGION }}
-
 
