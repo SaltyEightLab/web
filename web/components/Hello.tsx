@@ -6,7 +6,7 @@ function App() {
   const [helloText, setHelloText] = useState('');
 
   const fetchGreeting = async () => {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_SERVER}:8080/hello`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_SERVER}/hello`;
     const response = await fetch(apiUrl, { mode: 'cors' });
     const text = await response.text();
     setHelloText(text);
