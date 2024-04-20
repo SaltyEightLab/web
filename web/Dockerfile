@@ -26,7 +26,6 @@ ENV NEXT_PUBLIC_API_SERVER=$NEXT_PUBLIC_API_SERVER
 RUN npm ci
 RUN npm run test
 RUN npm run build
-RUN npm run export
 
 # nginxをセットアップするためのステージ
 FROM nginx:alpine AS nginx-setup
