@@ -23,7 +23,7 @@ jobs:
   web-test-build-image:
     name: Web Container - Test and Build 
     runs-on: ubuntu-20.04
-    timeout-minutes: 10  # タイムアウトを10分に設定
+    timeout-minutes: 10
     defaults:  # デフォルト設定
       run:
         working-directory: web  # デフォルトの作業ディレクトリを'web'に指定
