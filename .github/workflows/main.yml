@@ -24,7 +24,7 @@ jobs:
     name: Web Container - Test and Build 
     runs-on: ubuntu-20.04
     timeout-minutes: 10
-    defaults:  # デフォルト設定
+    defaults: 
       run:
         working-directory: web  # デフォルトの作業ディレクトリを'web'に指定
     
