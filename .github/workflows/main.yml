@@ -28,7 +28,7 @@ jobs:
       run:
         working-directory: web
     
-    steps:  # ジョブで実行するステップを定義
+    steps:
       - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
       
       - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
