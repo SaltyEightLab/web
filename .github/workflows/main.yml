@@ -26,7 +26,7 @@ jobs:
     timeout-minutes: 10
     defaults: 
       run:
-        working-directory: web  # デフォルトの作業ディレクトリを'web'に指定
+        working-directory: web
     
     steps:  # ジョブで実行するステップを定義
       - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
