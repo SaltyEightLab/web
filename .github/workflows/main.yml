@@ -74,7 +74,7 @@ jobs:
       
       - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
         run: |
-          docker image build --target production -t temp_web_image_name:latest --build-arg NEXT_PUBLIC_API_SERVER=http://2my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api .
+          docker image build --target production -t temp_web_image_name:latest --build-arg NEXT_PUBLIC_API_SERVER=http://my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api .
 
 ## Login AWS
       - name: Configure AWS credentials  # AWSの認証情報を設定
