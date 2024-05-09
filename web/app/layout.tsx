@@ -1,3 +1,5 @@
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -16,7 +18,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
+      </body>
     </html>
   );
 }
