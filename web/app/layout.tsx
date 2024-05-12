@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -21,10 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Header />
         <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className="flex-1 bg-white text-gray-800 p-8">{children}</main>
         </div>
       </body>
     </html>
