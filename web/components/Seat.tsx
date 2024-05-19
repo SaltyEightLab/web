@@ -1,5 +1,6 @@
 import React from 'react';
-import { StudentType } from '../app/page'; // StudentType をインポート
+import { StudentType } from '@/types/StudentType';
+
 
 interface SeatProps {
   student: StudentType;
