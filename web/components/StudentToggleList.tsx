@@ -9,18 +9,37 @@ import { Switch } from "@headlessui/react";
 interface StudentToggleListProps {
   isActive: boolean;
   label: string | null;
-  parameter: string | null;
 }
 
-const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label, parameter }) => {
+const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label}) => {
   const students = useContext(StudentContext); // StudentContextからstudentsを取得
   const [toggles, setToggles] = useState<boolean[]>([]);
 
   useEffect(() => {
-    if (students) {
-      setToggles(new Array(students.length).fill(false));
+    if (students && label) {
+      const newToggles = students.map((student) => {
+        switch (label) {
+          case "最前列":
+            return student.prefersFrontRow;
+          case "前２列":
+            return student.prefersFrontTwoRows;
+          case "最後列":
+            return student.prefersBackRow;
+          case "後２列":
+            return student.prefersBackTwoRows;
+          case "最右列":
+            return student.prefersRightColumn;
+          case "最左列":
+            return student.prefersLeftColumn;
+          case "教師の近く":
+            return student.prefersNearTeacher;
+          default:
+            return false;
+        }
+      });
+      setToggles(newToggles);
     }
-  }, [students]);
+  }, [students, label]);
 
   const extensionAnimation = useSpring({
     to: {
@@ -38,6 +57,36 @@ const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label, 
     const newToggles = [...toggles];
     newToggles[index] = isChecked;
     setToggles(newToggles);
+  
+    if (students) {
+      const student = students[index];
+  
+      switch (label) {
+        case "最前列":
+          student.prefersFrontRow = isChecked;
+          break;
+        case "前２列":
+          student.prefersFrontTwoRows = isChecked;
+          break;
+        case "最後列":
+          student.prefersBackRow = isChecked;
+          break;
+        case "後２列":
+          student.prefersBackTwoRows = isChecked;
+          break;
+        case "最右列":
+          student.prefersRightColumn = isChecked;
+          break;
+        case "最左列":
+          student.prefersLeftColumn = isChecked;
+          break;
+        case "教師の近く":
+          student.prefersNearTeacher = isChecked;
+          break;
+      }
+      // studentのプロパティをコンソールに出力（変更後）
+      console.log(`Student ${index}:`, student);
+    }
   };
 
   if (!students) {

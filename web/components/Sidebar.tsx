@@ -8,35 +8,32 @@ import StudentSelecter from "./StudentSelecter";
 
 const Sidebar: React.FC = () => {
   const items = [
-    { label: "最前列", parameter: "prefersFrontRow" },
-    { label: "前２列", parameter: "prefersFrontTwoRows" },
-    { label: "最後列", parameter: "prefersBackRow" },
-    { label: "後２列", parameter: "prefersBackTwoRows" },
-    { label: "最右列", parameter: "prefersRightColumn" },
-    { label: "最左列", parameter: "prefersLeftColumn" },
-    { label: "教師の近く", parameter: "prefersNearTeacher" },
-    { label: "隣", parameter: "studentsToPlaceNextTo" },
-    { label: "２席以内", parameter: "studentsToPlaceWithinTwoSeats" },
-    { label: "１席離す", parameter: "studentsToPlaceAwayOneSeat" },
-    { label: "２席離す", parameter: "studentsToPlaceAwayTwoSeats" },
+    { label: "最前列"},
+    { label: "前２列"},
+    { label: "最後列"},
+    { label: "後２列" },
+    { label: "最右列"},
+    { label: "最左列"},
+    { label: "教師の近く"},
+    { label: "隣"},
+    { label: "２席以内"},
+    { label: "１席離す"},
+    { label: "２席離す"},
   ];
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
-  const [activeParameter, setActiveParameter] = useState<string | null>(null);
   const [tempIsActive, setTempIsActive] = useState<boolean>(false);
 
   useEffect(() => {
     if (activeIndex !== null) {
       setActiveLabel(items[activeIndex].label);
-      setActiveParameter(items[activeIndex].parameter);
       setTempIsActive(false);
       setTimeout(() => {
         setTempIsActive(true);
       }, 250);
     } else {
       setActiveLabel(null);
-      setActiveParameter(null);
       setTempIsActive(false);
     }
   }, [activeIndex]); // activeIndex が変更されたときに activeLabel を更新
@@ -88,7 +85,6 @@ const Sidebar: React.FC = () => {
       <StudentToggleList
         isActive={studentToggleListIsActive}
         label={activeLabel}
-        parameter={activeParameter}
       />
       <StudentSelecter
         isActive={studentSelecterIsActive}

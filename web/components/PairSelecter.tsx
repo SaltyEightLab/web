@@ -5,6 +5,7 @@ import { StudentContext } from "@/app/page";
 
 interface PairSelecterProps {
   onRemove: () => void;
+  label: string | null;
 }
 
 const PairSelecter: React.FC<PairSelecterProps> = ({ onRemove }) => {
