@@ -71,6 +71,7 @@ public class SeatArrangementEngine {
     while (!unseatedStudents.isEmpty() && !emptySeats.isEmpty()) {
       Student unseatedStudent = unseatedStudents.get(0);
       List<Seat> filteredEmptySeats = seatFilter.filterSeats(emptySeats, unseatedStudent, isCompleteSeatChangeMode);
+      System.out.println("配置可能な座席の候補:" + filteredEmptySeats);
 
       if (!filteredEmptySeats.isEmpty()) {
         int randomIndex = random.nextInt(filteredEmptySeats.size());

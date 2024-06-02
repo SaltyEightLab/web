@@ -90,13 +90,13 @@ const StudentSelecterBeta: React.FC<StudentSelecterProps> = ({ isActive, label }
   }, [pairs, students, label]);
 
   const extensionAnimation = useSpring({
-    to: { width: isActive ? "300px" : "0px", opacity: isActive ? 1 : 0 },
-    from: { width: "0px", opacity: 0 },
+    to: { width: isActive ? "300px" : "0px", opacity: isActive ? 1 : 0, display: isActive ? "block" : "none" },
+    from: { width: "0px", opacity: 0, display: "none", backgroundColor: "white" },
     config: { tension: 500, friction: 50 },
   });
 
   return (
-    <animated.div style={extensionAnimation} className="bg-blue-50 flex-shrink-0 z-50 p-4 rounded-lg shadow-sm overflow-hidden">
+    <animated.div style={extensionAnimation} className="bg-gray-50 flex-shrink-0 z-50 p-4 rounded-lg overflow-hidden">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">{label}</h2>
       {pairs.map((pair) => (
         <PairSelecterBeta
@@ -108,7 +108,7 @@ const StudentSelecterBeta: React.FC<StudentSelecterProps> = ({ isActive, label }
           student2={pair.student2}
         />
       ))}
-      <button onClick={addPairSelecter} className="mt-4 ml-8 px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300">
+      <button onClick={addPairSelecter} className="mt-4 ml-8 px-4 py-2 bg-yellow-300 text-black rounded-lg shadow hover:bg-yellow-200 transition duration-300">
         組み合わせを追加
       </button>
     </animated.div>

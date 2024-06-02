@@ -2,11 +2,16 @@ package com.example.api.seatarranger;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Seat {
 
+  @JsonProperty("from_front")
   private final int FROM_FRONT;
+
+  @JsonProperty("from_right")
   private final int FROM_RIGHT;
+
   private boolean isToBeUsed = true;
   private Student currentStudent;
   private Student assignedStudent;
@@ -15,6 +20,21 @@ public class Seat {
   private List<Seat> innerSurroundingSeats = new ArrayList<>(); // 直接囲む生徒のリスト
   private List<Seat> outerSurroundingSeats = new ArrayList<>(); // さらに外側を囲む生徒のリスト
   private ClassRoom classRoom;
+
+  public Seat(@JsonProperty("from_front") int fromFront, @JsonProperty("from_right") int fromRight) {
+    // if (fromFront < 0 || fromFront >= classRoom.getRows()) {
+    //   throw new IllegalArgumentException("無効なfromFront値です。");
+    // }
+    // if (fromRight < 0 || fromRight >= classRoom.getColumns()) {
+    //   throw new IllegalArgumentException("無効なfromRight値です。");
+    // }
+    this.FROM_FRONT = fromFront;
+    this.FROM_RIGHT = fromRight;
+  }
+
+  public void setClassRoom(ClassRoom classRoom) {
+    this.classRoom = classRoom;
+  }
 
   // コンストラクタ
   public Seat(int fromFront, int fromRight, ClassRoom classRoom) {

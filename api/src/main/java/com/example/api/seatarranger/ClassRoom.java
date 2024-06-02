@@ -18,6 +18,13 @@ public class ClassRoom {
    * @param rows    教室の行数
    * @param columns 教室の列数
    */
+
+public ClassRoom() {
+  this.rows = 0;
+  this.columns = 0;
+  this.lines = new ArrayList<>();
+}
+
   public ClassRoom(int rows, int columns) {
     if (rows < 1) {
       throw new IllegalArgumentException("不正なrowsです。");

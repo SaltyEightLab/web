@@ -9,9 +9,10 @@ interface SidebarItemProps {
   label: string;
   onClick: () => void;  // onClick プロパティを追加
   isOpen: boolean;
+  menuIcon: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ label, onClick, isOpen }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ label, onClick, isOpen, menuIcon }) => {
   const students = useContext(StudentContext); // StudentContextからstudentsを取得
 
   const itemHeight = 32; // この値は実際のデザインに合わせて調整してください
@@ -26,13 +27,13 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, onClick, isOpen }) => 
   });
 
   return (
-    <li className={`flex flex-col items-start my-2 py-2 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-200 ease-in-out shadow-sm z-50 ${isOpen ? "bg-blue-100" : "bg-white"}`}>
+    <li className={`flex flex-col items-start my-2 py-2 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-200 ease-in-out shadow-sm z-50 ${isOpen ? "bg-teal-100" : "bg-white"}`} >
       <div
         className="flex items-center w-full text-gray-800"
         onClick={onClick}
       >
-        <IoIosStar className="text-yellow-500 mr-2 text-lg" />
-        <span className="font-semibold">{label}</span>
+        <img src={menuIcon} alt="Menu Icon" className="mx-2" />
+        <span>{label}</span>
         {isOpen ? (
           <IoIosArrowBack className="ml-auto" />
         ) : (

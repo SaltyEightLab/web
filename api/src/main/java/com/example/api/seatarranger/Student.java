@@ -2,33 +2,79 @@ package com.example.api.seatarranger;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Student {
 
+  @JsonProperty("currentSeat")
   private Seat currentSeat;
+
+  @JsonProperty("assignedSeat")
   private Seat assignedSeat;
+
+  @JsonProperty("IDforBackend")
   private final int ID;
+
+  @JsonProperty("name")
   private String name;
-  private List<Student> studentsToPlaceNextTo = new ArrayList<>(); // 隣に配置するべき生徒
-  private List<Student> studentsToPlaceWithinTwoSeats = new ArrayList<>(); // 二席以内に配置するべき生徒
-  private List<Student> studentsToPlaceAwayOneSeat = new ArrayList<>(); // 一席以上離れて配置するべき生徒
-  private List<Student> studentsToPlaceAwayTwoSeats = new ArrayList<>(); // 二席以上離れて配置するべき生徒
+  
+  @JsonProperty("studentsToPlaceNextTo")
+  private List<Student> studentsToPlaceNextTo = new ArrayList<>();
+
+  @JsonProperty("studentsToPlaceWithinTwoSeats")
+  private List<Student> studentsToPlaceWithinTwoSeats = new ArrayList<>();
+
+  @JsonProperty("studentsToPlaceAwayOneSeat")
+  private List<Student> studentsToPlaceAwayOneSeat = new ArrayList<>();
+
+  @JsonProperty("studentsToPlaceAwayTwoSeats")
+  private List<Student> studentsToPlaceAwayTwoSeats = new ArrayList<>();
+
   private List<Student> studentsWantingNextToMe = new ArrayList<>(); // 自分の隣にいたい生徒
   private List<Student> studentsWantingWithinTwoSeatsOfMe = new ArrayList<>(); // 自分の二席以内にいたい生徒
   private List<Student> studentsWantingAwayOneSeatFromMe = new ArrayList<>(); // 自分と一席以上離れたい生徒
   private List<Student> studentsWantingAwayTwoSeatsFromMe = new ArrayList<>(); // 自分と二席以上離れたい生徒
-  private boolean prefersFrontRow = false; // 前から一行目を希望
-  private boolean prefersFrontTwoRows = false; // 前から一行目と二行目を希望
-  private boolean prefersBackRow = false; // 後ろから一行目を希望
-  private boolean prefersBackTwoRows = false; // 後ろから一行目と二行目を希望
-  private boolean prefersLeftColumn = false; // 左から一列目を希望
-  private boolean prefersRightColumn = false; // 右から一列目を希望
-  private boolean prefersNearTeacher = false; // 教師の近くを希望
+
+  @JsonProperty("prefersFrontRow")
+  private boolean prefersFrontRow = false;
+
+  @JsonProperty("prefersFrontTwoRows")
+  private boolean prefersFrontTwoRows = false;
+
+  @JsonProperty("prefersBackRow")
+  private boolean prefersBackRow = false;
+
+  @JsonProperty("prefersBackTwoRows")
+  private boolean prefersBackTwoRows = false;
+
+  @JsonProperty("prefersLeftColumn")
+  private boolean prefersLeftColumn = false;
+
+  @JsonProperty("prefersRightColumn")
+  private boolean prefersRightColumn = false;
+
+  @JsonProperty("prefersNearTeacher")
+  private boolean prefersNearTeacher = false;
+
+  @JsonProperty("gender")
   private Gender gender = Gender.UNISEX;
+
+  @JsonProperty("difficultyScore")
   private int difficultyScore = 10;
+
+  @JsonProperty("backtrackStudent")
   private Student backtrackStudent = null;
+
+  @JsonProperty("isVisited")
   private boolean isVisited = false;
+
+  @JsonProperty("DFSChainScore")
   private int DFSChainScore;
+
+public Student() {
+  this.currentSeat = null;
+  this.ID = 0;
+}//とりあえず
 
   public Student(Seat currentSeat, int ID) {
     if (currentSeat == null) {
@@ -43,18 +89,43 @@ public class Student {
 
   public String toString() {
     return (
-      this.name +
-      " , DFSChainScore:" +
-      this.DFSChainScore +
-      " , DifficultyScore" +
-      this.difficultyScore +
-      " , ID:" +
-      this.ID +
-      " , currentSeat:" +
-      this.getCurrentSeat() +
-      " , assignedSeat:" +
-      this.assignedSeat
+      "Student{" +
+      "name='" + name + '\'' +
+      ", ID=" + ID +
+      ", currentSeat=" + currentSeat +
+      ", assignedSeat=" + assignedSeat +
+      ", studentsToPlaceNextTo=" + getStudentListString(studentsToPlaceNextTo) +
+      ", studentsToPlaceWithinTwoSeats=" + getStudentListString(studentsToPlaceWithinTwoSeats) +
+      ", studentsToPlaceAwayOneSeat=" + getStudentListString(studentsToPlaceAwayOneSeat) +
+      ", studentsToPlaceAwayTwoSeats=" + getStudentListString(studentsToPlaceAwayTwoSeats) +
+      ", studentsWantingNextToMe=" + getStudentListString(studentsWantingNextToMe) +
+      ", studentsWantingWithinTwoSeatsOfMe=" + getStudentListString(studentsWantingWithinTwoSeatsOfMe) +
+      ", studentsWantingAwayOneSeatFromMe=" + getStudentListString(studentsWantingAwayOneSeatFromMe) +
+      ", studentsWantingAwayTwoSeatsFromMe=" + getStudentListString(studentsWantingAwayTwoSeatsFromMe) +
+      ", prefersFrontRow=" + prefersFrontRow +
+      ", prefersFrontTwoRows=" + prefersFrontTwoRows +
+      ", prefersBackRow=" + prefersBackRow +
+      ", prefersBackTwoRows=" + prefersBackTwoRows +
+      ", prefersLeftColumn=" + prefersLeftColumn +
+      ", prefersRightColumn=" + prefersRightColumn +
+      ", prefersNearTeacher=" + prefersNearTeacher +
+      ", gender=" + gender +
+      ", difficultyScore=" + difficultyScore +
+      ", DFSChainScore=" + DFSChainScore +
+      '}'
     );
+  }
+  
+  private String getStudentListString(List<Student> students) {
+    StringBuilder sb = new StringBuilder("[");
+    for (Student student : students) {
+      sb.append("{ID=").append(student.getID()).append(", name='").append(student.getName()).append("'}, ");
+    }
+    if (sb.length() > 1) {
+      sb.setLength(sb.length() - 2); // 最後のカンマとスペースを削除
+    }
+    sb.append("]");
+    return sb.toString();
   }
 
   public int getID() {
@@ -153,6 +224,7 @@ public class Student {
       }
       if (!studentsToPlaceNextTo.contains(student)) {
         studentsToPlaceNextTo.add(student);
+        // System.out.println(this + "のstudentsToPlaceNextToに" + student + "を追加しました。次に、addStudentsWantingNextToMe(" + student + ")を呼び出します。");
         addStudentsWantingNextToMe(student);
       } else {
         System.out.println(student + "は既にListに含まれているため追加しませんでした。");
@@ -249,8 +321,8 @@ public class Student {
       throw new IllegalArgumentException("生徒は自分自身をリストに追加することはできません。");
     }
     if (student != null && !this.equals(student) && !studentsWantingNextToMe.contains(student)) {
-      System.out.println(student + "のstudentsWantingNextToMeに" + this + "を追加しました。");
       student.studentsWantingNextToMe.add(this);
+      System.out.println(student + "のstudentsWantingNextToMeに" + this + "を追加しました。");
     } else {
       System.out.println(student + "はすでにリストに含まれているため追加しませんでした。");
     }
@@ -265,7 +337,7 @@ public class Student {
       throw new IllegalArgumentException("生徒は自分自身をリストに追加することはできません。");
     }
     if (student != null && !this.equals(student) && !studentsWantingWithinTwoSeatsOfMe.contains(student)) {
-      System.out.println(student + "のstudentsWantingWithinTwoSeatsOfMeに" + this + "を追加しました。");
+      // System.out.println(student + "のstudentsWantingWithinTwoSeatsOfMeに" + this + "を追加しました。");
       student.studentsWantingWithinTwoSeatsOfMe.add(this);
     } else {
       System.out.println(student + "はすでにリストに含まれているため追加しませんでした。");
@@ -309,12 +381,12 @@ public class Student {
   }
 
   public void setPrefersFrontRow(boolean prefersFrontRow) {
-    this.prefersBackRow = false;
-    this.prefersBackTwoRows = false;
-    this.prefersFrontTwoRows = false;
-    this.prefersLeftColumn = false;
-    this.prefersRightColumn = false;
-    this.prefersNearTeacher = false;
+    // this.prefersBackRow = false;
+    // this.prefersBackTwoRows = false;
+    // this.prefersFrontTwoRows = false;
+    // this.prefersLeftColumn = false;
+    // this.prefersRightColumn = false;
+    // this.prefersNearTeacher = false;
 
     this.prefersFrontRow = prefersFrontRow;
   }
@@ -324,12 +396,12 @@ public class Student {
   }
 
   public void setPrefersFrontTwoRows(boolean prefersFrontTwoRows) {
-    this.prefersBackRow = false;
-    this.prefersBackTwoRows = false;
-    this.prefersFrontRow = false;
-    this.prefersLeftColumn = false;
-    this.prefersRightColumn = false;
-    this.prefersNearTeacher = false;
+    // this.prefersBackRow = false;
+    // this.prefersBackTwoRows = false;
+    // this.prefersFrontRow = false;
+    // this.prefersLeftColumn = false;
+    // this.prefersRightColumn = false;
+    // this.prefersNearTeacher = false;
 
     this.prefersFrontTwoRows = prefersFrontTwoRows;
   }
@@ -339,12 +411,12 @@ public class Student {
   }
 
   public void setPrefersBackRow(boolean prefersBackRow) {
-    this.prefersBackTwoRows = false;
-    this.prefersFrontRow = false;
-    this.prefersFrontTwoRows = false;
-    this.prefersLeftColumn = false;
-    this.prefersRightColumn = false;
-    this.prefersNearTeacher = false;
+    // this.prefersBackTwoRows = false;
+    // this.prefersFrontRow = false;
+    // this.prefersFrontTwoRows = false;
+    // this.prefersLeftColumn = false;
+    // this.prefersRightColumn = false;
+    // this.prefersNearTeacher = false;
 
     this.prefersBackRow = prefersBackRow;
   }
@@ -354,12 +426,12 @@ public class Student {
   }
 
   public void setPrefersBackTwoRows(boolean prefersBackTwoRows) {
-    this.prefersBackRow = false;
-    this.prefersFrontRow = false;
-    this.prefersFrontTwoRows = false;
-    this.prefersLeftColumn = false;
-    this.prefersRightColumn = false;
-    this.prefersNearTeacher = false;
+    // this.prefersBackRow = false;
+    // this.prefersFrontRow = false;
+    // this.prefersFrontTwoRows = false;
+    // this.prefersLeftColumn = false;
+    // this.prefersRightColumn = false;
+    // this.prefersNearTeacher = false;
 
     this.prefersBackTwoRows = prefersBackTwoRows;
   }
@@ -369,12 +441,12 @@ public class Student {
   }
 
   public void setPrefersLeftColumn(boolean prefersLeftColumn) {
-    this.prefersBackRow = false;
-    this.prefersBackTwoRows = false;
-    this.prefersFrontRow = false;
-    this.prefersFrontTwoRows = false;
-    this.prefersRightColumn = false;
-    this.prefersNearTeacher = false;
+    // this.prefersBackRow = false;
+    // this.prefersBackTwoRows = false;
+    // this.prefersFrontRow = false;
+    // this.prefersFrontTwoRows = false;
+    // this.prefersRightColumn = false;
+    // this.prefersNearTeacher = false;
 
     this.prefersLeftColumn = prefersLeftColumn;
   }
@@ -384,12 +456,12 @@ public class Student {
   }
 
   public void setPrefersRightColumn(boolean prefersRightColumn) {
-    this.prefersBackRow = false;
-    this.prefersBackTwoRows = false;
-    this.prefersFrontRow = false;
-    this.prefersFrontTwoRows = false;
-    this.prefersLeftColumn = false;
-    this.prefersNearTeacher = false;
+    // this.prefersBackRow = false;
+    // this.prefersBackTwoRows = false;
+    // this.prefersFrontRow = false;
+    // this.prefersFrontTwoRows = false;
+    // this.prefersLeftColumn = false;
+    // this.prefersNearTeacher = false;
 
     this.prefersRightColumn = prefersRightColumn;
   }
@@ -399,12 +471,12 @@ public class Student {
   }
 
   public void setPrefersNearTeacher(boolean prefersNearTeacher) {
-    this.prefersBackRow = false;
-    this.prefersBackTwoRows = false;
-    this.prefersFrontRow = false;
-    this.prefersFrontTwoRows = false;
-    this.prefersLeftColumn = false;
-    this.prefersRightColumn = false;
+    // this.prefersBackRow = false;
+    // this.prefersBackTwoRows = false;
+    // this.prefersFrontRow = false;
+    // this.prefersFrontTwoRows = false;
+    // this.prefersLeftColumn = false;
+    // this.prefersRightColumn = false;
 
     this.prefersNearTeacher = prefersNearTeacher;
   }

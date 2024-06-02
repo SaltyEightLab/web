@@ -50,7 +50,7 @@ public class SeatFilter {
   private boolean isSeatMatchingPreferences(Seat seat, Student student, boolean isCompleteSeatChangeMode) {
     return (
       isNotSameSeatWhenCompleteChangeMode(seat, student, isCompleteSeatChangeMode) &&
-      isGenderMatch(seat, student) &&
+      // isGenderMatch(seat, student) && //後々、オプションとして追加実装しましょう。
       isFrontRowPreferenceMatched(seat, student) &&
       isBackRowPreferenceMatched(seat, student) &&
       isColumnPreferenceMatched(seat, student) &&
