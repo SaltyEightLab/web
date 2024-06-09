@@ -15,9 +15,19 @@ public class Student {
   @JsonProperty("IDforBackend")
   private final int ID;
 
+  private int IDforOutput;
+
+  public int getIDforOutput() {
+    return IDforOutput;
+  }
+
+  public void setIDforOutput(int IDforOutput) {
+    this.IDforOutput = IDforOutput;
+  }
+
   @JsonProperty("name")
   private String name;
-  
+
   @JsonProperty("studentsToPlaceNextTo")
   private List<Student> studentsToPlaceNextTo = new ArrayList<>();
 
@@ -71,10 +81,10 @@ public class Student {
   @JsonProperty("DFSChainScore")
   private int DFSChainScore;
 
-public Student() {
-  this.currentSeat = null;
-  this.ID = 0;
-}//とりあえず
+  public Student() {
+    this.currentSeat = null;
+    this.ID = 0;
+  }// とりあえず
 
   public Student(Seat currentSeat, int ID) {
     if (currentSeat == null) {
@@ -88,34 +98,33 @@ public Student() {
   }
 
   public String toString() {
-    return (
-      "Student{" +
-      "name='" + name + '\'' +
-      ", ID=" + ID +
-      ", currentSeat=" + currentSeat +
-      ", assignedSeat=" + assignedSeat +
-      ", studentsToPlaceNextTo=" + getStudentListString(studentsToPlaceNextTo) +
-      ", studentsToPlaceWithinTwoSeats=" + getStudentListString(studentsToPlaceWithinTwoSeats) +
-      ", studentsToPlaceAwayOneSeat=" + getStudentListString(studentsToPlaceAwayOneSeat) +
-      ", studentsToPlaceAwayTwoSeats=" + getStudentListString(studentsToPlaceAwayTwoSeats) +
-      ", studentsWantingNextToMe=" + getStudentListString(studentsWantingNextToMe) +
-      ", studentsWantingWithinTwoSeatsOfMe=" + getStudentListString(studentsWantingWithinTwoSeatsOfMe) +
-      ", studentsWantingAwayOneSeatFromMe=" + getStudentListString(studentsWantingAwayOneSeatFromMe) +
-      ", studentsWantingAwayTwoSeatsFromMe=" + getStudentListString(studentsWantingAwayTwoSeatsFromMe) +
-      ", prefersFrontRow=" + prefersFrontRow +
-      ", prefersFrontTwoRows=" + prefersFrontTwoRows +
-      ", prefersBackRow=" + prefersBackRow +
-      ", prefersBackTwoRows=" + prefersBackTwoRows +
-      ", prefersLeftColumn=" + prefersLeftColumn +
-      ", prefersRightColumn=" + prefersRightColumn +
-      ", prefersNearTeacher=" + prefersNearTeacher +
-      ", gender=" + gender +
-      ", difficultyScore=" + difficultyScore +
-      ", DFSChainScore=" + DFSChainScore +
-      '}'
-    );
+    return ("Student{" +
+        "name='" + name + '\'' +
+        ", ID=" + ID +
+        ", IDforOutput=" + IDforOutput +
+        ", currentSeat=" + currentSeat +
+        ", assignedSeat=" + assignedSeat +
+        ", studentsToPlaceNextTo=" + getStudentListString(studentsToPlaceNextTo) +
+        ", studentsToPlaceWithinTwoSeats=" + getStudentListString(studentsToPlaceWithinTwoSeats) +
+        ", studentsToPlaceAwayOneSeat=" + getStudentListString(studentsToPlaceAwayOneSeat) +
+        ", studentsToPlaceAwayTwoSeats=" + getStudentListString(studentsToPlaceAwayTwoSeats) +
+        ", studentsWantingNextToMe=" + getStudentListString(studentsWantingNextToMe) +
+        ", studentsWantingWithinTwoSeatsOfMe=" + getStudentListString(studentsWantingWithinTwoSeatsOfMe) +
+        ", studentsWantingAwayOneSeatFromMe=" + getStudentListString(studentsWantingAwayOneSeatFromMe) +
+        ", studentsWantingAwayTwoSeatsFromMe=" + getStudentListString(studentsWantingAwayTwoSeatsFromMe) +
+        ", prefersFrontRow=" + prefersFrontRow +
+        ", prefersFrontTwoRows=" + prefersFrontTwoRows +
+        ", prefersBackRow=" + prefersBackRow +
+        ", prefersBackTwoRows=" + prefersBackTwoRows +
+        ", prefersLeftColumn=" + prefersLeftColumn +
+        ", prefersRightColumn=" + prefersRightColumn +
+        ", prefersNearTeacher=" + prefersNearTeacher +
+        ", gender=" + gender +
+        ", difficultyScore=" + difficultyScore +
+        ", DFSChainScore=" + DFSChainScore +
+        '}');
   }
-  
+
   private String getStudentListString(List<Student> students) {
     StringBuilder sb = new StringBuilder("[");
     for (Student student : students) {
@@ -191,8 +200,7 @@ public Student() {
     }
     if (assignedSeat.getAssignedStudent() != null) {
       throw new IllegalArgumentException(
-        "この座席にはすでに、" + assignedSeat.getAssignedStudent() + "が割り当てられています。"
-      );
+          "この座席にはすでに、" + assignedSeat.getAssignedStudent() + "が割り当てられています。");
     }
     this.assignedSeat = assignedSeat;
   }
@@ -224,7 +232,8 @@ public Student() {
       }
       if (!studentsToPlaceNextTo.contains(student)) {
         studentsToPlaceNextTo.add(student);
-        // System.out.println(this + "のstudentsToPlaceNextToに" + student + "を追加しました。次に、addStudentsWantingNextToMe(" + student + ")を呼び出します。");
+        // System.out.println(this + "のstudentsToPlaceNextToに" + student +
+        // "を追加しました。次に、addStudentsWantingNextToMe(" + student + ")を呼び出します。");
         addStudentsWantingNextToMe(student);
       } else {
         System.out.println(student + "は既にListに含まれているため追加しませんでした。");
@@ -246,9 +255,8 @@ public Student() {
         addStudentsWantingWithinTwoSeatsOfMe(student);
       } else {
         System.out.println(
-          student +
-          "は既にstudentsToPlaceWithinTwoSeatsまたはstudentsToPlaceAwayOneSeatに含まれているため追加しませんでした。"
-        );
+            student +
+                "は既にstudentsToPlaceWithinTwoSeatsまたはstudentsToPlaceAwayOneSeatに含まれているため追加しませんでした。");
       }
     }
   }
@@ -267,9 +275,8 @@ public Student() {
         addStudentsWantingAwayOneSeatFromMe(student);
       } else {
         System.out.println(
-          student +
-          "は既にstudentsToPlaceAwayTwoSeatsまたはstudentsToPlaceAwayOneSeat含まれているため追加しませんでした。"
-        );
+            student +
+                "は既にstudentsToPlaceAwayTwoSeatsまたはstudentsToPlaceAwayOneSeat含まれているため追加しませんでした。");
       }
     }
   }
@@ -337,7 +344,8 @@ public Student() {
       throw new IllegalArgumentException("生徒は自分自身をリストに追加することはできません。");
     }
     if (student != null && !this.equals(student) && !studentsWantingWithinTwoSeatsOfMe.contains(student)) {
-      // System.out.println(student + "のstudentsWantingWithinTwoSeatsOfMeに" + this + "を追加しました。");
+      // System.out.println(student + "のstudentsWantingWithinTwoSeatsOfMeに" + this +
+      // "を追加しました。");
       student.studentsWantingWithinTwoSeatsOfMe.add(this);
     } else {
       System.out.println(student + "はすでにリストに含まれているため追加しませんでした。");
@@ -512,25 +520,31 @@ public Student() {
     score += studentsToPlaceAwayTwoSeats.size() * 3;
 
     // 他の席の希望に基づくスコア
-    if (prefersFrontRow) score += 10;
-    if (prefersFrontTwoRows) score += 5;
-    if (prefersBackRow) score += 10;
-    if (prefersBackTwoRows) score += 5;
-    if (prefersLeftColumn) score += 10;
-    if (prefersRightColumn) score += 10;
-    if (prefersNearTeacher) score += 15;
+    if (prefersFrontRow)
+      score += 10;
+    if (prefersFrontTwoRows)
+      score += 5;
+    if (prefersBackRow)
+      score += 10;
+    if (prefersBackTwoRows)
+      score += 5;
+    if (prefersLeftColumn)
+      score += 10;
+    if (prefersRightColumn)
+      score += 10;
+    if (prefersNearTeacher)
+      score += 15;
 
     this.difficultyScore = score;
 
     return score;
   }
 
-  //席替えが無事完了した際に座席の決定を行う。
+  // 席替えが無事完了した際に座席の決定を行う。
   public void assignSeat() {
     if (this.assignedSeat == null) {
       throw new IllegalArgumentException(
-        this.getName() + "のassignedSeatがnullであるために、assignSeat()が完了しませんでした。"
-      );
+          this.getName() + "のassignedSeatがnullであるために、assignSeat()が完了しませんでした。");
     }
     this.currentSeat = this.assignedSeat;
     this.assignedSeat = null;

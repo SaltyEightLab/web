@@ -17,7 +17,7 @@ public class SeatFilter {
    * @param student    生徒
    * @return 候補となる席のリスト
    */
-  public List<Seat> filterSeats(List<Seat> emptySeats, Student student, boolean isCompleteSeatChangeMode) {
+  public List<Seat> filterSeats(List<Seat> emptySeats, Student student, boolean isCompleteSeatChangeMode, boolean fixedByGenderMode) {
     // 引数のバリデーション
     if (emptySeats == null) {
       throw new IllegalArgumentException("空席のリストがnullです。");
@@ -32,7 +32,7 @@ public class SeatFilter {
 
     while (iterator.hasNext()) {
       Seat seat = iterator.next();
-      if (!isSeatMatchingPreferences(seat, student, isCompleteSeatChangeMode)) {
+      if (!isSeatMatchingPreferences(seat, student, isCompleteSeatChangeMode, fixedByGenderMode)) {
         iterator.remove();
       }
     }
@@ -47,10 +47,10 @@ public class SeatFilter {
    * @param student 生徒
    * @return 席が好みに合っている場合はtrue、それ以外の場合はfalse
    */
-  private boolean isSeatMatchingPreferences(Seat seat, Student student, boolean isCompleteSeatChangeMode) {
+  private boolean isSeatMatchingPreferences(Seat seat, Student student, boolean isCompleteSeatChangeMode, boolean fixedByGenderMode) {
     return (
       isNotSameSeatWhenCompleteChangeMode(seat, student, isCompleteSeatChangeMode) &&
-      // isGenderMatch(seat, student) && //後々、オプションとして追加実装しましょう。
+      (!fixedByGenderMode || isGenderMatch(seat, student)) &&
       isFrontRowPreferenceMatched(seat, student) &&
       isBackRowPreferenceMatched(seat, student) &&
       isColumnPreferenceMatched(seat, student) &&
@@ -59,6 +59,7 @@ public class SeatFilter {
       areStudentsSeatedWithinTwoSeats(seat, student) &&
       areDistantStudentsNotAdjacent(seat, student) &&
       areDistantStudentsSeparatedByTwoSeats(seat, student)
+      
     );
   }
 

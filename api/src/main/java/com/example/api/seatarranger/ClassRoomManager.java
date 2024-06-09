@@ -2,6 +2,7 @@ package com.example.api.seatarranger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 public class ClassRoomManager {
 
@@ -46,7 +47,7 @@ public class ClassRoomManager {
     return unseatedStudents;
   }
 
-  //座席数分の生徒を生み出し、List<Student> studentsに追加します。
+  // 座席数分の生徒を生み出し、List<Student> studentsに追加します。
   public void generateStudents() {
     List<Student> students = new ArrayList<>();
     List<Seat> allSeatsToBeUsed = classRoom.getSeatsToBeUsed();
@@ -84,10 +85,14 @@ public class ClassRoomManager {
     return classRoom.getSeatAtPosition(row, column).getCurrentStudent();
   }
 
-  // private List<Student> studentsToPlaceNextTo = new ArrayList<>(); // 隣に配置するべき生徒
-  // private List<Student> studentsToPlaceWithinTwoSeats = new ArrayList<>(); // 二席以内に配置するべき生徒
-  // private List<Student> studentsToPlaceAwayOneSeat = new ArrayList<>(); // 一席以上離れて配置するべき生徒
-  // private List<Student> studentsToPlaceAwayTwoSeats = new ArrayList<>(); // 二席以上離れて配置するべき生徒
+  // private List<Student> studentsToPlaceNextTo = new ArrayList<>(); //
+  // 隣に配置するべき生徒
+  // private List<Student> studentsToPlaceWithinTwoSeats = new ArrayList<>(); //
+  // 二席以内に配置するべき生徒
+  // private List<Student> studentsToPlaceAwayOneSeat = new ArrayList<>(); //
+  // 一席以上離れて配置するべき生徒
+  // private List<Student> studentsToPlaceAwayTwoSeats = new ArrayList<>(); //
+  // 二席以上離れて配置するべき生徒
 
   // private boolean prefersFrontRow = false; // 前から一行目を希望
   // private boolean prefersFrontTwoRows = false; // 前から一行目と二行目を希望
@@ -97,11 +102,10 @@ public class ClassRoomManager {
   // private boolean prefersRightColumn = false; // 右から一列目を希望
   // private boolean prefersNearTeacher = false; // 教師の近くを希望
   public void setSeatPreferenceForStudentAtPosition(
-    int row,
-    int column,
-    SeatPreference seatPreference,
-    boolean isPrefer
-  ) {
+      int row,
+      int column,
+      SeatPreference seatPreference,
+      boolean isPrefer) {
     if (row < 0 || row >= classRoom.getRows()) {
       throw new IllegalArgumentException("不正なrow値です。");
     }
@@ -150,5 +154,20 @@ public class ClassRoomManager {
       throw new IllegalArgumentException("genderをnullにはできません。");
     }
     classRoom.getSeatAtPosition(row, column).getCurrentStudent().setGender(gender);
+  }
+
+  public List<ForOutputStudent> getStudentsForOutput() {
+
+    List<ForOutputStudent> outputStudents = new ArrayList<>();
+    for (Student student : students) {
+      ForOutputStudent outputStudent = new ForOutputStudent(
+          student.getID(),
+          student.getName(),
+          student.getAssignedSeat().getFromFront(),
+          student.getAssignedSeat().getFromRight());
+      outputStudents.add(outputStudent);
+    }
+
+    return outputStudents;
   }
 }

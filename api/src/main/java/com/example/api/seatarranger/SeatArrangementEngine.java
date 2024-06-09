@@ -17,7 +17,7 @@ public class SeatArrangementEngine {
    * @param students  ClassRoomMannagerに所属する生徒群
    */
 
-  public void arrangeSeats(ClassRoom classRoom, List<Student> students, boolean isCompleteSeatChangeMode) {
+  public void arrangeSeats(ClassRoom classRoom, List<Student> students, boolean isCompleteSeatChangeMode, boolean fixedByGenderMode) {
     // 引数のバリデーション
     if (classRoom == null) {
       throw new IllegalArgumentException("classRoomはnullにできません。");
@@ -70,7 +70,7 @@ public class SeatArrangementEngine {
     // 生徒を配置
     while (!unseatedStudents.isEmpty() && !emptySeats.isEmpty()) {
       Student unseatedStudent = unseatedStudents.get(0);
-      List<Seat> filteredEmptySeats = seatFilter.filterSeats(emptySeats, unseatedStudent, isCompleteSeatChangeMode);
+      List<Seat> filteredEmptySeats = seatFilter.filterSeats(emptySeats, unseatedStudent, isCompleteSeatChangeMode, fixedByGenderMode);
       System.out.println("配置可能な座席の候補:" + filteredEmptySeats);
 
       if (!filteredEmptySeats.isEmpty()) {

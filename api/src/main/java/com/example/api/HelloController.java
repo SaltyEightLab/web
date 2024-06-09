@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.ArrayList;
 import com.example.api.seatarranger.Student;
 import com.example.api.seatarranger.ClassRoom;
 import com.example.api.seatarranger.ClassRoomManager;
@@ -16,6 +17,7 @@ import com.example.api.seatarranger.Seat;
 import com.example.api.seatarranger.ClassRoomDisplay;
 import com.example.api.seatarranger.SeatArrangementEngine;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.api.seatarranger.ForOutputStudent;
 
 import java.util.Comparator;
 
@@ -52,7 +54,7 @@ public class HelloController {
             students.sort(Comparator.comparingInt(Student::getID));
             // // toString() メソッドを使用して各 Student オブジェクトを出力
             // for (Student student : students) {
-            //     System.out.println(student.toString());
+            // System.out.println(student.toString());
             // }
 
         } catch (Exception e) {
@@ -61,7 +63,7 @@ public class HelloController {
     }
 
     @PostMapping("/seatarrange")
-    public void seatArrangeByRecievedData(@RequestBody DataWrapper dataWrapper) {
+    public ResponseEntity<List<ForOutputStudent>> seatArrangeByRecievedData(@RequestBody DataWrapper dataWrapper) {
         try {
             // ①ClassRoom classRoom = new ClassRoom(5, 6);
             // クラスルームを生成する。
@@ -104,7 +106,8 @@ public class HelloController {
                 for (int i = 0; i < rows; i++) {
                     Student student = classRoom.getSeatAtPosition(i, j).getCurrentStudent();
                     Student receivedStudentInfo = receivedStudentsInfo.get(j * rows + i);
-                    // System.out.println("rows:" + i + "、columuns:" + j + "、" + receivedStudentInfo + "の情報を、" + student + "に入力しました。");
+                    // System.out.println("rows:" + i + "、columuns:" + j + "、" + receivedStudentInfo
+                    // + "の情報を、" + student + "に入力しました。");
 
                     // 希望する座席の条件を設定
                     student.setName(receivedStudentInfo.getName());
@@ -121,22 +124,38 @@ public class HelloController {
                     List<Student> students = classRoomManager.getUnseatedStudents();
                     List<Student> studentsToPlaceNextToInfo = receivedStudentInfo.getStudentsToPlaceNextTo();
                     for (Student studentToPlaceNextToInfo : studentsToPlaceNextToInfo) {
-                        student.addStudentsToPlaceNextTo(students.stream().filter(s -> s.getID() == studentToPlaceNextToInfo.getID()).findFirst().orElse(null));
+                        student.addStudentsToPlaceNextTo(students.stream()
+                                .filter(s -> s.getID() == studentToPlaceNextToInfo.getID()).findFirst().orElse(null));
                     }
-                    List<Student> studentsToPlaceWithinTwoSeatsInfo = receivedStudentInfo.getStudentsToPlaceWithinTwoSeats();
+                    List<Student> studentsToPlaceWithinTwoSeatsInfo = receivedStudentInfo
+                            .getStudentsToPlaceWithinTwoSeats();
                     for (Student studentToPlaceWithinTwoSeatsInfo : studentsToPlaceWithinTwoSeatsInfo) {
-                        student.addStudentsToPlaceWithinTwoSeats(students.stream().filter(s -> s.getID() == studentToPlaceWithinTwoSeatsInfo.getID()).findFirst().orElse(null));
+                        student.addStudentsToPlaceWithinTwoSeats(
+                                students.stream().filter(s -> s.getID() == studentToPlaceWithinTwoSeatsInfo.getID())
+                                        .findFirst().orElse(null));
                     }
-                    List<Student> studentsWantingAwayOneSeatFromMeInfo = receivedStudentInfo.getStudentsWantingAwayOneSeatFromMe();
+                    List<Student> studentsWantingAwayOneSeatFromMeInfo = receivedStudentInfo
+                            .getStudentsWantingAwayOneSeatFromMe();
                     for (Student studentWantingAwayOneSeatFromMeInfo : studentsWantingAwayOneSeatFromMeInfo) {
-                        student.addStudentsWantingAwayOneSeatFromMe(students.stream().filter(s -> s.getID() == studentWantingAwayOneSeatFromMeInfo.getID()).findFirst().orElse(null));
+                        student.addStudentsWantingAwayOneSeatFromMe(
+                                students.stream().filter(s -> s.getID() == studentWantingAwayOneSeatFromMeInfo.getID())
+                                        .findFirst().orElse(null));
                     }
-                    List<Student> studentsWantingAwayTwoSeatsFromMeInfo = receivedStudentInfo.getStudentsWantingAwayTwoSeatsFromMe();
+                    List<Student> studentsWantingAwayTwoSeatsFromMeInfo = receivedStudentInfo
+                            .getStudentsWantingAwayTwoSeatsFromMe();
                     for (Student studentWantingAwayTwoSeatsFromMeInfo : studentsWantingAwayTwoSeatsFromMeInfo) {
-                        student.addStudentsWantingAwayTwoSeatsFromMe(students.stream().filter(s -> s.getID() == studentWantingAwayTwoSeatsFromMeInfo.getID()).findFirst().orElse(null));
+                        student.addStudentsWantingAwayTwoSeatsFromMe(
+                                students.stream().filter(s -> s.getID() == studentWantingAwayTwoSeatsFromMeInfo.getID())
+                                        .findFirst().orElse(null));
                     }
                 }
             }
+
+            //座席に性別をset
+           List<Seat> seats = classRoom.getAllSeats();
+           for(Seat seat : seats){
+            seat.setSeatGender(seat.getCurrentStudent().getGender());
+           }
 
             // ⑧席替え前の配置の出力
             System.out.println("8:席替え前の配置を出力する。");
@@ -150,22 +169,31 @@ public class HelloController {
             // public void arrangeSeats(ClassRoom classRoom, List<Student> students, boolean
             // isCompleteSeatChangeMode)
             // 第２引数はpublic List<Student> getUnseatedStudents()
-            System.out.println("9:席替えを実行する。");
+            boolean perfectSeatArrangeMode = dataWrapper.getPerfectSeatArrangeMode();
+            boolean fixedByGenderMode = dataWrapper.getFixedByGenderMode();
+            System.out.println("9:席替えを実行する。" + "perfectSeatArrangeMode:" + perfectSeatArrangeMode + "、" + "fixedByGenderMode:" + fixedByGenderMode);
             SeatArrangementEngine seatArrangementEngine = new SeatArrangementEngine();
             seatArrangementEngine.arrangeSeats(
-            classRoom,
-            classRoomManager.getUnseatedStudents(),
-            true
-            );
+                    classRoom,
+                    classRoomManager.getUnseatedStudents(),
+                    perfectSeatArrangeMode,
+                    fixedByGenderMode);
 
             // ⑩結果の出力
             // public class ClassRoomDisplay public void
             // displayFinalSeatArrangement(ClassRoom classroom)
             System.out.println("10:結果を出力する。");
             classRoomDisplay.displayFinalSeatArrangement(classRoom);
-           
+
+            //お試し
+            List<ForOutputStudent> studentsForOutput = classRoomManager.getStudentsForOutput();
+
+            System.out.println(classRoom.getAllSeats());
+
+            return ResponseEntity.ok(studentsForOutput);
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 
@@ -174,10 +202,11 @@ public class HelloController {
         return ResponseEntity.ok("Hello World!!");
     }
 
-
     public static class DataWrapper {
         private int rows;
         private int columns;
+        private boolean perfectSeatArrangeMode;
+        private boolean fixedByGenderMode;
         private List<Student> students;
 
         // Getters and Setters
@@ -193,8 +222,25 @@ public class HelloController {
             return columns;
         }
 
+
         public void setColumns(int columns) {
             this.columns = columns;
+        }
+
+        public boolean getPerfectSeatArrangeMode() {
+            return perfectSeatArrangeMode;
+        }
+
+        public void setPerfectSeatArrangeMode(boolean perfectSeatArrangeMode) {
+            this.perfectSeatArrangeMode = perfectSeatArrangeMode;
+        }
+
+        public boolean getFixedByGenderMode() {
+            return fixedByGenderMode;
+        }
+
+        public void setFixedByGenderMode(boolean fixedByGenderMode) {
+            this.fixedByGenderMode = fixedByGenderMode;
         }
 
         public List<Student> getStudents() {

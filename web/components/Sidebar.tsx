@@ -6,10 +6,9 @@ import ClassLayoutConf from "./ClassLayoutConf";
 import StudentToggleList from "./StudentToggleList"; // 新しいコンポーネントをインポート
 import StudentSelecterBeta from "./StudentSelecterBeta";
 import { EachLabelContextProvider } from "@/context/EachLabelContext"; // EachLabelContextProviderをインポート
-import SendStudentsButton from "./SendStudentsButton";
-import Hello from "./Hello";
-import LogStudentsButton from "./LogStudentsButton";
-import SeatArrangeButton from "./SeatArrangeButton";
+import SeatArrangeButtonBeta from "./SeatArrangeButtonBeta";
+import PerfectSeatArrangeModeConf from "./PerfectSeatArrangeModeConf";
+import FixedByGenderModeConf from "./FixedByGenderModeConf";
 
 const Sidebar: React.FC = () => {
   const items = [
@@ -58,15 +57,14 @@ const Sidebar: React.FC = () => {
     <aside className="min-h-screen text-gray-800 p-5 flex" style={{backgroundColor: "#E0E9E5"}}>
       <div className="pr-2">
         <ClassLayoutConf />
+        <PerfectSeatArrangeModeConf />
+        <FixedByGenderModeConf />
         <ul>
           {items.map((item, index) => (
             <SidebarItem key={index} label={item.label} onClick={() => handleToggle(index)} isOpen={activeIndex === index} menuIcon={item.icon} />
           ))}
         </ul>
-        <Hello />
-        <SendStudentsButton />
-        <LogStudentsButton />
-        <SeatArrangeButton />
+        <SeatArrangeButtonBeta />
       </div>
       <StudentToggleList isActive={studentToggleListIsActive} label={activeLabel} />
       <EachLabelContextProvider>

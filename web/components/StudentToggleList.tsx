@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useState, useEffect } from "react";
-import { IoIosStar } from "react-icons/io";
 import { useSpring, animated } from "react-spring";
 import { StudentContext } from "@/app/page";
 import { Switch } from "@headlessui/react";

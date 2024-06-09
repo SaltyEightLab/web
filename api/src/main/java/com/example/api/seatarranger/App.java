@@ -151,11 +151,15 @@ public class App {
     seatArrangementEngine.arrangeSeats(
       classRoom,
       classRoomManager.getUnseatedStudents(),
+      true,
       true
     );
 
     //結果の出力
     //public class ClassRoomDisplay public void displayFinalSeatArrangement(ClassRoom classroom)
     classRoomDisplay.displayFinalSeatArrangement(classRoom);
+
+    System.out.println(classRoom.getAllSeats());
+
   }
 }
