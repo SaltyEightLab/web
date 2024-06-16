@@ -32,7 +32,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, onClick, isOpen, menuI
         className="flex items-center w-full text-gray-800"
         onClick={onClick}
       >
-        <img src={menuIcon} alt="Menu Icon" className="mx-2" />
+        <img src={menuIcon} alt="Menu Icon" className="mx-2 w-8 h-6" />
         <span>{label}</span>
         {isOpen ? (
           <IoIosArrowBack className="ml-auto" />

@@ -161,7 +161,7 @@ public class ClassRoomManager {
     List<ForOutputStudent> outputStudents = new ArrayList<>();
     for (Student student : students) {
       ForOutputStudent outputStudent = new ForOutputStudent(
-          student.getID(),
+          student.getIDforBackend(),
           student.getName(),
           student.getAssignedSeat().getFromFront(),
           student.getAssignedSeat().getFromRight());

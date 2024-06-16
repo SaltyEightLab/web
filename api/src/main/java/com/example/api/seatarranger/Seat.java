@@ -59,7 +59,7 @@ public class Seat {
   }
 
   public String toString() {
-    return "(" + this.FROM_FRONT + "," + this.FROM_RIGHT + "), " + this.seatGender;
+    return "(" + this.FROM_FRONT + "," + this.FROM_RIGHT + "), " + this.isNearTeacher;
   }
 
   // 座席の位置情報を取得するメソッド

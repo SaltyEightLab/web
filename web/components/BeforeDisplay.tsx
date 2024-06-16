@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { StudentContext } from "@/app/page";
 import { LayoutContext } from "@/app/page";
-import Seat from "./Seat";
+import SeatBeta from "./SeatBeta";
 
 const BeforeDisplay = () => {
   const students = useContext(StudentContext);
@@ -16,7 +16,7 @@ const BeforeDisplay = () => {
       <p className="p-5 text-center text-2xl font-bold text-gray-500">Before</p>
       <div style={{ display: "flex", flexWrap: "wrap", maxWidth: `${columns * 112}px` }}>
         {students.map((student) => (
-          <Seat key={student.index} student={student} />
+          <SeatBeta key={student.index} student={student} />
         ))}
       </div>
     </div>

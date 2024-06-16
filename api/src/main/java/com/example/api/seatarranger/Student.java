@@ -13,7 +13,7 @@ public class Student {
   private Seat assignedSeat;
 
   @JsonProperty("IDforBackend")
-  private final int ID;
+  private int IDforBackend;
 
   private int IDforOutput;
 
@@ -83,7 +83,7 @@ public class Student {
 
   public Student() {
     this.currentSeat = null;
-    this.ID = 0;
+    this.IDforBackend = 0;
   }// とりあえず
 
   public Student(Seat currentSeat, int ID) {
@@ -94,41 +94,41 @@ public class Student {
       throw new IllegalArgumentException("IDが不正な値です。");
     }
     this.currentSeat = currentSeat;
-    this.ID = ID;
+    this.IDforBackend = ID;
   }
 
   public String toString() {
     return ("Student{" +
         "name='" + name + '\'' +
-        ", ID=" + ID +
+        ", IDforBackend=" + IDforBackend +
         ", IDforOutput=" + IDforOutput +
         ", currentSeat=" + currentSeat +
         ", assignedSeat=" + assignedSeat +
         ", studentsToPlaceNextTo=" + getStudentListString(studentsToPlaceNextTo) +
-        ", studentsToPlaceWithinTwoSeats=" + getStudentListString(studentsToPlaceWithinTwoSeats) +
-        ", studentsToPlaceAwayOneSeat=" + getStudentListString(studentsToPlaceAwayOneSeat) +
-        ", studentsToPlaceAwayTwoSeats=" + getStudentListString(studentsToPlaceAwayTwoSeats) +
+        // ", studentsToPlaceWithinTwoSeats=" + getStudentListString(studentsToPlaceWithinTwoSeats) +
+        // ", studentsToPlaceAwayOneSeat=" + getStudentListString(studentsToPlaceAwayOneSeat) +
+        // ", studentsToPlaceAwayTwoSeats=" + getStudentListString(studentsToPlaceAwayTwoSeats) +
         ", studentsWantingNextToMe=" + getStudentListString(studentsWantingNextToMe) +
-        ", studentsWantingWithinTwoSeatsOfMe=" + getStudentListString(studentsWantingWithinTwoSeatsOfMe) +
-        ", studentsWantingAwayOneSeatFromMe=" + getStudentListString(studentsWantingAwayOneSeatFromMe) +
-        ", studentsWantingAwayTwoSeatsFromMe=" + getStudentListString(studentsWantingAwayTwoSeatsFromMe) +
-        ", prefersFrontRow=" + prefersFrontRow +
-        ", prefersFrontTwoRows=" + prefersFrontTwoRows +
-        ", prefersBackRow=" + prefersBackRow +
-        ", prefersBackTwoRows=" + prefersBackTwoRows +
-        ", prefersLeftColumn=" + prefersLeftColumn +
-        ", prefersRightColumn=" + prefersRightColumn +
-        ", prefersNearTeacher=" + prefersNearTeacher +
-        ", gender=" + gender +
-        ", difficultyScore=" + difficultyScore +
-        ", DFSChainScore=" + DFSChainScore +
+        // ", studentsWantingWithinTwoSeatsOfMe=" + getStudentListString(studentsWantingWithinTwoSeatsOfMe) +
+        // ", studentsWantingAwayOneSeatFromMe=" + getStudentListString(studentsWantingAwayOneSeatFromMe) +
+        // ", studentsWantingAwayTwoSeatsFromMe=" + getStudentListString(studentsWantingAwayTwoSeatsFromMe) +
+        // ", prefersFrontRow=" + prefersFrontRow +
+        // ", prefersFrontTwoRows=" + prefersFrontTwoRows +
+        // ", prefersBackRow=" + prefersBackRow +
+        // ", prefersBackTwoRows=" + prefersBackTwoRows +
+        // ", prefersLeftColumn=" + prefersLeftColumn +
+        // ", prefersRightColumn=" + prefersRightColumn +
+        // ", prefersNearTeacher=" + prefersNearTeacher +
+        // ", gender=" + gender +
+        // ", difficultyScore=" + difficultyScore +
+        // ", DFSChainScore=" + DFSChainScore +
         '}');
   }
 
   private String getStudentListString(List<Student> students) {
     StringBuilder sb = new StringBuilder("[");
     for (Student student : students) {
-      sb.append("{ID=").append(student.getID()).append(", name='").append(student.getName()).append("'}, ");
+      sb.append("{ID=").append(student.getIDforBackend()).append(", name='").append(student.getName()).append("'}, ");
     }
     if (sb.length() > 1) {
       sb.setLength(sb.length() - 2); // 最後のカンマとスペースを削除
@@ -137,8 +137,12 @@ public class Student {
     return sb.toString();
   }
 
-  public int getID() {
-    return ID;
+  public int getIDforBackend() {
+    return IDforBackend;
+  }
+
+  public void setIDforBackend(int IDforBackend) {
+    this.IDforBackend = IDforBackend;
   }
 
   public Student getBacktrackStudent() {
@@ -225,10 +229,10 @@ public class Student {
   public void addStudentsToPlaceNextTo(Student... students) {
     for (Student student : students) {
       if (student == null) {
-        throw new IllegalArgumentException("追加する生徒はnullであってはなりません。");
+        throw new IllegalArgumentException("追加する生徒はnullであってはなりません。this:" + this + ", student:" + student);
       }
       if (this.equals(student)) {
-        throw new IllegalArgumentException("生徒は自分自身を二席以内に配置するリストに追加できません。");
+        throw new IllegalArgumentException("生徒は自分自身を一席以内に配置するリストに追加できません。");
       }
       if (!studentsToPlaceNextTo.contains(student)) {
         studentsToPlaceNextTo.add(student);

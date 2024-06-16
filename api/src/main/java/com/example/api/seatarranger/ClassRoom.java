@@ -163,5 +163,7 @@ public ClassRoom() {
     for (Seat seatNearTeacher : seatsNearTeacher) {
       seatNearTeacher.setNearTeacher(true);
     }
+
+    System.out.println("教卓に一番近い座席とその周囲の座席に、教師に近いことを示すマーカーを設定しました。seatsNearTeacher:" + seatsNearTeacher + ", seatNearestTeacher:" + seatNearestTeacher);
   }
 }

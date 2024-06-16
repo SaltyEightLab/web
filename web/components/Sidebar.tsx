@@ -9,6 +9,7 @@ import { EachLabelContextProvider } from "@/context/EachLabelContext"; // EachLa
 import SeatArrangeButtonBeta from "./SeatArrangeButtonBeta";
 import PerfectSeatArrangeModeConf from "./PerfectSeatArrangeModeConf";
 import FixedByGenderModeConf from "./FixedByGenderModeConf";
+import SeatClosestTeacherConf from "./SeatClosestTeacherConf";
 
 const Sidebar: React.FC = () => {
   const items = [
@@ -50,7 +51,6 @@ const Sidebar: React.FC = () => {
   const studentToggleListIsActive = tempIsActive && activeIndex !== null && labelsForStudentToggleList.includes(items[activeIndex].label);
 
   const labelsForStudentSelecterBeta = ["隣", "２席以内", "１席離す", "２席離す"];
-
   const studentSelecterBetaIsActive = tempIsActive && activeIndex !== null && labelsForStudentSelecterBeta.includes(items[activeIndex].label);
 
   return (
@@ -59,6 +59,7 @@ const Sidebar: React.FC = () => {
         <ClassLayoutConf />
         <PerfectSeatArrangeModeConf />
         <FixedByGenderModeConf />
+        <SeatClosestTeacherConf />
         <ul>
           {items.map((item, index) => (
             <SidebarItem key={index} label={item.label} onClick={() => handleToggle(index)} isOpen={activeIndex === index} menuIcon={item.icon} />

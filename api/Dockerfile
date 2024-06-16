@@ -1,4 +1,4 @@
-FROM gradle:7 AS base
+FROM gradle:jdk17 AS base
 CMD ["bash"]
 
 # test-and-build
@@ -8,6 +8,6 @@ WORKDIR /workspace
 RUN ./gradlew build
 
 # production
-FROM openjdk:17 AS production
+FROM openjdk:17-jre-slim AS production
 COPY --from=test-and-build /workspace/build/libs/api-0.0.1-SNAPSHOT.jar ./api.jar
 CMD [ "java", "-jar", "api.jar" ]

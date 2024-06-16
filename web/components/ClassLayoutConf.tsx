@@ -30,7 +30,7 @@ const ClassLayoutConf = () => {
 
   return (
     <div className="flex items-center py-1 bg-white hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-200 ease-in-out shadow-sm">
-      <img src="/menuIcon/layout.png" alt="Menu Icon" className="ml-2 mr-1" />
+      <img src="/menuIcon/layout.png" alt="Menu Icon" className="mx-2 w-8 h-6" />
       <label className="text-gray-700 font-semibold text-sm font-sans">
         <input type="number" value={rows} onChange={handleRowsChange} min="1" max="10" className="p-1.5 border border-gray-300 rounded bg-gray-50 transition-colors mx-1" />
       </label>

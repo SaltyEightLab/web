@@ -2,6 +2,7 @@
 
 import React, { useContext, useState, useEffect } from "react";
 import { StudentContext } from "@/app/page";
+import { Gender } from "@/types/Gender"; // 追加
 
 interface PairSelecterBetaProps {
   onRemove: () => void;
@@ -44,6 +45,7 @@ const PairSelecterBeta: React.FC<PairSelecterBetaProps> = ({ onRemove, onSelect,
               -- 生徒を選択 --
             </option>
             {students
+              .filter(student => student.gender !== Gender.IsNotToBeUsed) // GenderがIsNotToBeUsedの場合はスキップ
               .map((student) => (
                 <option key={student.index} value={student.index}>
                   {student.name || `生徒 ${student.index + 1}`}
@@ -61,11 +63,12 @@ const PairSelecterBeta: React.FC<PairSelecterBetaProps> = ({ onRemove, onSelect,
               -- 生徒を選択 --
             </option>
             {students
+              .filter(student => student.gender !== Gender.IsNotToBeUsed) // GenderがIsNotToBeUsedの場合はスキップ
               .map((student) => (
                 <option key={student.index} value={student.index}>
                   {student.name || `生徒 ${student.index + 1}`}
-              </option>
-            ))}
+                </option>
+              ))}
           </select>
         </div>
       </div>

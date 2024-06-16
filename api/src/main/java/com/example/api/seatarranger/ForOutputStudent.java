@@ -1,20 +1,30 @@
 package com.example.api.seatarranger;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ForOutputStudent {
-    private int ID;
+    @JsonProperty("IDforBackend")
+    private int IDforBackend;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("assignedSeatFromFront")
     private int assignedSeatFromFront;
+    @JsonProperty("assignedSeatFromRight")
     private int assignedSeatFromRight;
 
-    public ForOutputStudent(int ID, String name, int assignedSeatFromFront, int assignedSeatFromRight) {
-        this.ID = ID;
+    public ForOutputStudent(@JsonProperty("IDforBackend") int IDforBackend, @JsonProperty("name") String name, @JsonProperty("assignedSeatFromFront") int assignedSeatFromFront, @JsonProperty("assignedSeatFromRight") int assignedSeatFromRight) {
+        this.IDforBackend = IDforBackend;
         this.name = name;
         this.assignedSeatFromFront = assignedSeatFromFront;
         this.assignedSeatFromRight = assignedSeatFromRight;
     }
 
-    public int getID() {
-        return ID;
+    public String toString() {
+        return "IDforBackend:" + IDforBackend + ", name:" + name + ", assignedSeatFromFront:" + assignedSeatFromFront + ", assignedSeatFromRight:" + assignedSeatFromRight;
+    }
+
+    public int getIDforBackend() {
+        return IDforBackend;
     }
 
     public String getName() {
@@ -29,8 +39,8 @@ public class ForOutputStudent {
         return assignedSeatFromRight;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setIDforBackend(int ID) {
+        this.IDforBackend = ID;
     }
 
     public void setName(String name) {

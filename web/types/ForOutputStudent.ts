@@ -1,5 +1,5 @@
 export interface ForOutputStudent {
-    id: number;
+    IDforBackend: number;
     name: string;
     assignedSeatFromFront: number;
     assignedSeatFromRight: number;
