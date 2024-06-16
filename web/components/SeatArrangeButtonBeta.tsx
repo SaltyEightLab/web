@@ -60,7 +60,7 @@ const SeatArrangeButtonBeta: React.FC = () => {
     const apiUrl = `${process.env.NEXT_PUBLIC_API_SERVER}/seatarrangeBeta`;
 
     let errorCount = 0;
-    const maxRetries = 5;
+    const maxRetries = 20;
 
     while (errorCount < maxRetries) {
       try {

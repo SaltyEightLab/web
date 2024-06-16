@@ -41,7 +41,7 @@ const Sidebar: React.FC = () => {
       setActiveLabel(null);
       setTempIsActive(false);
     }
-  }, [activeIndex]); // activeIndex が変更されたときに activeLabel を更新
+  }, [activeIndex, items]); // activeIndex が変更されたときに activeLabel を更新
 
   const handleToggle = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);

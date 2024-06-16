@@ -9,6 +9,16 @@ const SeatClosestTeacherConf = () => {
   const seatClosestTeacher = useContext(seatClosestTeacherContext);
   const layout = useContext(LayoutContext);
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (layout) {
+      const { rows, columns } = layout;
+      setSeatClosestTeacherFrom_front(0);
+      setSeatClosestTeacherFrom_right(columns - 1);
+    }
+  }, [layout]);
+
   if (!layout || !seatClosestTeacher) {
     return null;
   }
@@ -30,24 +40,9 @@ const SeatClosestTeacherConf = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("closestTeacherFrom_frontValue", seatClosestTeacherFrom_front);
-  }, [seatClosestTeacherFrom_front]);
-
-  useEffect(() => {
-    console.log("closestTeacherFrom_rightValue", seatClosestTeacherFrom_right);
-  }, [seatClosestTeacherFrom_right]);
-
-  const [isOpen, setIsOpen] = useState(false);
-
   const onClick = () => {
     setIsOpen(!isOpen);
   };
-
-  useEffect(() => {
-    setSeatClosestTeacherFrom_front(0);
-    setSeatClosestTeacherFrom_right(columns - 1);
-  }, [rows, columns]);
 
   return (
     <li className="flex flex-col items-start my-2 py-2 cursor-pointer rounded-lg transition-colors duration-200 ease-in-out shadow-sm z-50 bg-white">
