@@ -1,18 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import SidebarItem from "./SidebarItem";
 import ClassLayoutConf from "./ClassLayoutConf";
 import StudentToggleList from "./StudentToggleList"; // 新しいコンポーネントをインポート
 import StudentSelecterBeta from "./StudentSelecterBeta";
-import { EachLabelContextProvider } from "@/context/EachLabelContext"; // EachLabelContextProviderをインポート
 import SeatArrangeButtonBeta from "./SeatArrangeButtonBeta";
 import PerfectSeatArrangeModeConf from "./PerfectSeatArrangeModeConf";
 import FixedByGenderModeConf from "./FixedByGenderModeConf";
 import SeatClosestTeacherConf from "./SeatClosestTeacherConf";
 
 const Sidebar: React.FC = () => {
-  const items = [
+  const items = useMemo(() => [
     { label: "最前列", icon: "/menuIcon/saizenretsu.png" },
     { label: "前２列", icon: "/menuIcon/mae2retsu.png" },
     { label: "最後列", icon: "/menuIcon/saikouretsu.png" },
@@ -24,7 +23,7 @@ const Sidebar: React.FC = () => {
     { label: "２席以内", icon: "/menuIcon/2sekiinai.png" },
     { label: "１席離す", icon: "/menuIcon/1sekihanasu.png" },
     { label: "２席離す", icon: "/menuIcon/2sekihanasu.png" },
-  ];
+  ], []);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
@@ -37,6 +36,7 @@ const Sidebar: React.FC = () => {
       setTimeout(() => {
         setTempIsActive(true);
       }, 250);
+      console.log("activeIndexが更新されました。：", activeIndex, "activeLabelが更新されました。：", activeLabel, "tempIsActiveが更新されました。：", tempIsActive);
     } else {
       setActiveLabel(null);
       setTempIsActive(false);
@@ -68,9 +68,7 @@ const Sidebar: React.FC = () => {
         <SeatArrangeButtonBeta />
       </div>
       <StudentToggleList isActive={studentToggleListIsActive} label={activeLabel} />
-      <EachLabelContextProvider>
         <StudentSelecterBeta isActive={studentSelecterBetaIsActive} label={activeLabel} />
-      </EachLabelContextProvider>
     </aside>
   );
 };

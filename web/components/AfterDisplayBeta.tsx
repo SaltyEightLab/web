@@ -34,7 +34,7 @@ const AfterDisplayBeta: React.FC = () => {
       const bValue = b.assignedSeat.from_front * layout.columns + -1 * (b.assignedSeat.from_right + 1 - layout.columns);
       return aValue - bValue;
     });
-    console.log("studentsForDisplay:", studentsForDisplay);
+    // console.log("studentsForDisplay:", studentsForDisplay);
     return studentsForDisplay;
   };
 

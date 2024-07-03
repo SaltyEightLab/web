@@ -1,0 +1,40 @@
+import React from "react";
+import { SignIn, SignOut } from "./AuthComponents";
+import { auth } from "@/auth";
+
+const UserButton: React.FC = async () => {
+    const session = await auth();
+
+    if (!session) {
+        return (
+            <div className="flex space-x-4">
+                <SignIn provider="github" label="GitHub" /> {/* GitHubでのサインイン */}
+                <SignIn provider="google" label="Google"/> {/* Googleでのサインインを追加 */}
+            </div>
+        );
+    }
+
+    if (!session.user) {
+        return <div>ユーザー情報が取得できませんでした</div>;
+    }
+
+    return (
+        <div className="relative group flex items-center space-x-4">
+            {session.user.image && (
+                <img
+                    src={session.user.image}
+                    alt={session.user.name ?? ""}
+                    className="w-8 h-8 rounded-full"
+                />
+            )}
+            <SignOut />
+            <div className="absolute top-full mt-2 p-2 bg-white border rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity transform -translate-x-1/2 space-y-2">
+                <div className="text-sm font-bold">{session.user.name}</div>
+                <div className="text-xs">{session.user.email}</div>
+                <div className="text-xs">{session.user.id}</div>
+            </div>
+        </div>
+    );
+};
+
+export default UserButton;

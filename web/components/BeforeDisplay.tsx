@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StudentContext } from "@/app/page";
 import { LayoutContext } from "@/app/page";
 import SeatBeta from "./SeatBeta";

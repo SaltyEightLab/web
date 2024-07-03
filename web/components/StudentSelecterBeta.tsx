@@ -111,6 +111,9 @@ const StudentSelecterBeta: React.FC<StudentSelecterProps> = ({ isActive, label }
       <button onClick={addPairSelecter} className="mt-4 ml-8 px-4 py-2 bg-yellow-300 text-black rounded-lg shadow hover:bg-yellow-200 transition duration-300">
         組み合わせを追加
       </button>
+      <button onClick={() => console.log(nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs)}>
+        Pairを出力
+      </button>
     </animated.div>
   );
 };

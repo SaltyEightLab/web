@@ -97,21 +97,21 @@ const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label }
     <animated.div style={extensionAnimation} className="bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden">
       <h2 className="text-lg font-semibold text-gray-800 mb-4">{label}</h2>
       {students.map((student) => {
-  if (student.gender === Gender.IsNotToBeUsed) return null; // GenderがIsNotToBeUsedの場合はスキップ
-  return (
-    <animated.div key={student.index} style={{ opacity: extensionAnimation.opacity }}>
-      <li
-        className="flex justify-between items-center mb-2 p-2 hover:bg-gray-100 rounded-md transition-colors duration-300 ease-in-out"
-        onClick={() => handleToggle(student.index, !toggles[student.index])}
-      >
-        {student.name || `生徒${student.index + 1}`}
-        <Switch className={`${toggles[student.index] ? "bg-blue-500" : "bg-gray-300"} relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none`}>
-          <span className={`${toggles[student.index] ? "translate-x-6" : "translate-x-1"} inline-block w-4 h-4 transform bg-white rounded-full transition-transform`} />
-        </Switch>
-      </li>
-    </animated.div>
-  );
-})}
+        if (student.gender === Gender.IsNotToBeUsed) return null; // GenderがIsNotToBeUsedの場合はスキップ
+        return (
+          <animated.div key={student.index} style={{ opacity: extensionAnimation.opacity }}>
+            <li
+              className="flex justify-between items-center mb-2 p-2 hover:bg-gray-100 rounded-md transition-colors duration-300 ease-in-out"
+              onClick={() => handleToggle(student.index, !toggles[student.index])}
+            >
+              {student.name || `生徒${student.index + 1}`}
+              <Switch className={`${toggles[student.index] ? "bg-blue-500" : "bg-gray-300"} relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none`}>
+                <span className={`${toggles[student.index] ? "translate-x-6" : "translate-x-1"} inline-block w-4 h-4 transform bg-white rounded-full transition-transform`} />
+              </Switch>
+            </li>
+          </animated.div>
+        );
+      })}
     </animated.div>
   );
 };

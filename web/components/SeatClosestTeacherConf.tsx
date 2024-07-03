@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useContext, useState, useEffect } from "react";
-import { seatClosestTeacherContext } from "../app/page";
-import { LayoutContext } from "../app/page";
+import { seatClosestTeacherContext, LayoutContext } from "../app/page";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const SeatClosestTeacherConf = () => {
@@ -11,20 +10,22 @@ const SeatClosestTeacherConf = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (layout) {
-      const { rows, columns } = layout;
-      setSeatClosestTeacherFrom_front(0);
-      setSeatClosestTeacherFrom_right(columns - 1);
-    }
-  }, [layout]);
-
   if (!layout || !seatClosestTeacher) {
     return null;
   }
 
   const { rows, columns } = layout;
   const { seatClosestTeacherFrom_front, seatClosestTeacherFrom_right, setSeatClosestTeacherFrom_front, setSeatClosestTeacherFrom_right } = seatClosestTeacher;
+
+  useEffect(() => {
+    // rowsやcolumnsが変更されたときに初期値を再計算
+    setSeatClosestTeacherFrom_front(0);
+    setSeatClosestTeacherFrom_right(columns - 1);
+  }, [rows, columns, setSeatClosestTeacherFrom_front, setSeatClosestTeacherFrom_right]);
+
+  useEffect(() => {
+    // seatClosestTeacherFrom_frontやseatClosestTeacherFrom_rightが変更されたときに再レンダリング
+  }, [seatClosestTeacherFrom_front, seatClosestTeacherFrom_right]);
 
   const handleSeatClosestTeacherFrom_frontChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);

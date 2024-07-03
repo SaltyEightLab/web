@@ -1,4 +1,5 @@
 import React from 'react';
+import UserButton from './UserButton';
 
 const Header = () => {
   return (
@@ -7,9 +8,11 @@ const Header = () => {
       <div className="flex-1 flex justify-center items-center">
         <img src="/logo_green.png" alt="ロゴ" className="inline-block" />
       </div>
-      <div className="flex-1"></div>
+      <div className="flex-1 flex justify-end">
+        <UserButton />
+      </div>
     </header>
   );
 };
 
-export default Header;
+export default Header; 
