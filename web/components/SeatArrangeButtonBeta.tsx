@@ -6,7 +6,9 @@ import { Gender } from "@/types/Gender";
 import { EachLabelContext } from "@/context/EachLabelContext";
 
 const SeatArrangeButtonBeta: React.FC = () => {
-  const students = useContext(StudentContext);
+  const studentsContext = useContext(StudentContext);
+  const students = studentsContext?.students || [];
+  const updateStudents = studentsContext?.updateStudents;
   const layout = useContext(LayoutContext);
   const perfectSeatArrangeMode = useContext(perfectSeatArrangeModeContext);
   const isAfterSeatArrangeContextValue = useContext<IsAfterSeatArrangeContextType | null>(isAfterSeatArrangeContext);
@@ -121,17 +123,17 @@ const SeatArrangeButtonBeta: React.FC = () => {
   };
 
   return (
-    // <button className="w-full px-4 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring flex items-center justify-center" onClick={seatArrange}>
-    //   席替えをする
-    // </button>
-    <div className="flex flex-col px-4 py-1 rounded-md items-center justify-center bg-gray-100">
-      <button className="mb-2 px-4 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring" onClick={seatArrange}>
-        SeatArrangeBeta
-      </button>
-      <button className="px-4 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring" onClick={() => console.log(nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs)}>
-        Pairを出力
-      </button>
-    </div>
+    <button className="w-full px-4 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring flex items-center justify-center" onClick={seatArrange}>
+      席替えをする
+    </button>
+    // <div className="flex flex-col px-4 py-1 rounded-md items-center justify-center bg-gray-100">
+    //   <button className="mb-2 px-4 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring" onClick={seatArrange}>
+    //     SeatArrangeBeta
+    //   </button>
+    //   <button className="px-4 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring" onClick={() => console.log(nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs)}>
+    //     Pairを出力
+    //   </button>
+    // </div>
   );
 };
 

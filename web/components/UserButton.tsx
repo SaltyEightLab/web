@@ -31,7 +31,6 @@ const UserButton: React.FC = async () => {
             <div className="absolute top-full mt-2 p-2 bg-white border rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity transform -translate-x-1/2 space-y-2">
                 <div className="text-sm font-bold">{session.user.name}</div>
                 <div className="text-xs">{session.user.email}</div>
-                <div className="text-xs">{session.user.id}</div>
             </div>
         </div>
     );

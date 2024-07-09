@@ -13,7 +13,9 @@ interface PairSelecterBetaProps {
 }
 
 const PairSelecterBeta: React.FC<PairSelecterBetaProps> = ({ onRemove, onSelect, student1, student2 }) => {
-  const students = useContext(StudentContext); // StudentContextからstudentsを取得
+  const studentsContext  = useContext(StudentContext); // StudentContextからstudentsを取得
+  const students = studentsContext?.students || [];
+  const updateStudents = studentsContext?.updateStudents;
   const [selectedStudentID, setSelectedStudentID] = useState<number>(student1);
   const [selectedPairID, setSelectedPairID] = useState<number>(student2);
 

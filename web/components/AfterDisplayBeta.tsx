@@ -4,18 +4,22 @@ import { SeatSwapMode } from "@/types/SeatSwapMode";
 import { StudentType } from "@/types/StudentType";
 import NewSeatBeta from "@/components/NewSeatBeta";
 import { IsAfterSeatArrangeContextType } from "@/types/IsAfterSeatArrangeType";
+import SaveData from "@/components/SaveData";
 
 const AfterDisplayBeta: React.FC = () => {
   const studentsContext = useContext(StudentContext);
+  const students = studentsContext?.students || [];
+  const updateStudents = studentsContext?.updateStudents;
+
   const layout = useContext(LayoutContext);
   const isAfterSeatArrangeContextValue = useContext<IsAfterSeatArrangeContextType | null>(isAfterSeatArrangeContext);
 
-  const [students, setStudents] = useState(studentsContext);
+  // const [students, setStudents] = useState(studentsContext);
   const [seatSwapMode, setSeatSwapMode] = useState(SeatSwapMode.INACTIVE);
   const [student1, setStudent1] = useState<StudentType | null>(null);
   const [student2, setStudent2] = useState<StudentType | null>(null);
 
-  if (!students || !layout || !isAfterSeatArrangeContextValue) return;
+  if (!students || !layout || !isAfterSeatArrangeContextValue || !updateStudents) return;
 
   const setIsAfterSeatArrange = isAfterSeatArrangeContextValue.setIsAfterSeatArrange;
 
@@ -51,7 +55,7 @@ const AfterDisplayBeta: React.FC = () => {
       updatedStudents[student1Index].assignedSeat.from_right = student2.assignedSeat.from_right;
       updatedStudents[student2Index].assignedSeat.from_front = student1.assignedSeat.from_front;
       updatedStudents[student2Index].assignedSeat.from_right = student1.assignedSeat.from_right;
-      setStudents(updatedStudents);
+      updateStudents(updatedStudents);
       setStudent1(null);
       setStudent2(null);
     }
@@ -85,7 +89,7 @@ const AfterDisplayBeta: React.FC = () => {
           <NewSeatBeta key={student.index} student={student} seatSwapMode={seatSwapMode} onStudentClick={handleStudentClick} />
         ))}
       </div>
-      <div className="flex flex-col justify-center items-center space-y-4">
+      <div className="mb-4 flex flex-col justify-center items-center space-y-4">
         <button onClick={handleSeatSwapMode} className={`px-4 py-2 mt-12 text-white ${seatSwapMode === SeatSwapMode.INACTIVE ? 'bg-blue-500 hover:bg-blue-600' : 'bg-red-500 hover:bg-red-600'} rounded focus:outline-none focus:ring`}>
           {seatSwapMode === SeatSwapMode.INACTIVE ? "座席を入れ替える" : "入れ替えを中止する"}
         </button>
@@ -94,6 +98,9 @@ const AfterDisplayBeta: React.FC = () => {
             入れ替え実行
           </button>
         )}
+      </div>
+      <div className="flex justify-center w-full">
+        <SaveData />
       </div>
     </div>
   );

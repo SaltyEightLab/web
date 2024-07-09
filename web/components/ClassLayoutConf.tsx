@@ -1,18 +1,21 @@
 'use client'
 
-import React, { useContext } from 'react';
-import { IoIosStar } from 'react-icons/io';
-import { LayoutContext } from '../app/page';
+import React, { useContext, useEffect } from 'react';
+import { LayoutContext, isAfterSeatArrangeContext } from '../app/page';
+import { EachLabelContext } from "@/context/EachLabelContext";
 
 const ClassLayoutConf = () => {
   const layout = useContext(LayoutContext);
-
-  if (!layout) {
-    // LayoutContext が null の場合の処理
-    return <div>ロード中...</div>;
-  }
-
+  const eachLabelContext = useContext(EachLabelContext);
+  const isAfterSeatArrangeContextValue = useContext(isAfterSeatArrangeContext);
+  
+  if (!layout) {  return <div>ロード中...</div>;}
+  if (!eachLabelContext) {throw new Error("StudentSelecter must be used within a EachLabelContextProvider");}
+  if (!isAfterSeatArrangeContextValue) {throw new Error("isAfterSeatArrangeContext is undefined");}
+  
   const { rows, columns, setRows, setColumns } = layout;
+  const { nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs, setNextToPairs, setWithInTwoSeatsPairs, setAwayOneSeatsPairs, setAwayTwoSeatsPairs } = eachLabelContext;
+  const { isAfterSeatArrange, setIsAfterSeatArrange } = isAfterSeatArrangeContextValue;
 
   const handleRowsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
@@ -27,6 +30,14 @@ const ClassLayoutConf = () => {
       setColumns(value);
     }
   };
+
+  useEffect(() => {
+    setNextToPairs([]);
+    setWithInTwoSeatsPairs([]);
+    setAwayOneSeatsPairs([]);
+    setAwayTwoSeatsPairs([]);
+    setIsAfterSeatArrange(false);
+  }, [rows, columns]);
 
   return (
     <div className="flex items-center py-1 bg-white hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-200 ease-in-out shadow-sm">

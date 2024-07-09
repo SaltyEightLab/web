@@ -9,25 +9,32 @@ import SeatArrangeButtonBeta from "./SeatArrangeButtonBeta";
 import PerfectSeatArrangeModeConf from "./PerfectSeatArrangeModeConf";
 import FixedByGenderModeConf from "./FixedByGenderModeConf";
 import SeatClosestTeacherConf from "./SeatClosestTeacherConf";
+import HistoryOnSidebar from "./GetRecordOnSidebar";
+import GetRecord from "./GetRecord";
+import GetDemo from "./GetDemo";
 
 const Sidebar: React.FC = () => {
-  const items = useMemo(() => [
-    { label: "最前列", icon: "/menuIcon/saizenretsu.png" },
-    { label: "前２列", icon: "/menuIcon/mae2retsu.png" },
-    { label: "最後列", icon: "/menuIcon/saikouretsu.png" },
-    { label: "後２列", icon: "/menuIcon/ushiro2retsu.png" },
-    { label: "最右列", icon: "/menuIcon/saiuretsu.png" },
-    { label: "最左列", icon: "/menuIcon/saisaretsu.png" },
-    { label: "教師の近く", icon: "/menuIcon/kyoushinotikaku.png" },
-    { label: "隣", icon: "/menuIcon/tonari.png" },
-    { label: "２席以内", icon: "/menuIcon/2sekiinai.png" },
-    { label: "１席離す", icon: "/menuIcon/1sekihanasu.png" },
-    { label: "２席離す", icon: "/menuIcon/2sekihanasu.png" },
-  ], []);
+  const items = useMemo(
+    () => [
+      { label: "最前列", icon: "/menuIcon/saizenretsu.png" },
+      { label: "前２列", icon: "/menuIcon/mae2retsu.png" },
+      { label: "最後列", icon: "/menuIcon/saikouretsu.png" },
+      { label: "後２列", icon: "/menuIcon/ushiro2retsu.png" },
+      { label: "最右列", icon: "/menuIcon/saiuretsu.png" },
+      { label: "最左列", icon: "/menuIcon/saisaretsu.png" },
+      { label: "教師の近く", icon: "/menuIcon/kyoushinotikaku.png" },
+      { label: "隣", icon: "/menuIcon/tonari.png" },
+      { label: "２席以内", icon: "/menuIcon/2sekiinai.png" },
+      { label: "１席離す", icon: "/menuIcon/1sekihanasu.png" },
+      { label: "２席離す", icon: "/menuIcon/2sekihanasu.png" },
+    ],
+    []
+  );
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeLabel, setActiveLabel] = useState<string | null>(null);
   const [tempIsActive, setTempIsActive] = useState<boolean>(false);
+  const [historyIsActive, setHistoryIsActive] = useState<boolean>(false);
 
   useEffect(() => {
     if (activeIndex !== null) {
@@ -35,8 +42,7 @@ const Sidebar: React.FC = () => {
       setTempIsActive(false);
       setTimeout(() => {
         setTempIsActive(true);
-      }, 250);
-      console.log("activeIndexが更新されました。：", activeIndex, "activeLabelが更新されました。：", activeLabel, "tempIsActiveが更新されました。：", tempIsActive);
+      }, 100);
     } else {
       setActiveLabel(null);
       setTempIsActive(false);
@@ -45,7 +51,13 @@ const Sidebar: React.FC = () => {
 
   const handleToggle = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
+    setHistoryIsActive(false);
   };
+
+  const handleHistoryOnSidebarClick = () => {
+    setHistoryIsActive(!historyIsActive);
+    setActiveIndex(null);
+  }
 
   const labelsForStudentToggleList = ["最前列", "前２列", "最後列", "後２列", "最右列", "最左列", "教師の近く"];
   const studentToggleListIsActive = tempIsActive && activeIndex !== null && labelsForStudentToggleList.includes(items[activeIndex].label);
@@ -54,8 +66,9 @@ const Sidebar: React.FC = () => {
   const studentSelecterBetaIsActive = tempIsActive && activeIndex !== null && labelsForStudentSelecterBeta.includes(items[activeIndex].label);
 
   return (
-    <aside className="min-h-screen text-gray-800 p-5 flex" style={{backgroundColor: "#E0E9E5"}}>
+    <aside className="min-h-screen text-gray-800 p-5 flex" style={{ backgroundColor: "#E0E9E5" }}>
       <div className="pr-2">
+        <HistoryOnSidebar isOpen={historyIsActive} onClick={handleHistoryOnSidebarClick} />
         <ClassLayoutConf />
         <PerfectSeatArrangeModeConf />
         <FixedByGenderModeConf />
@@ -66,9 +79,11 @@ const Sidebar: React.FC = () => {
           ))}
         </ul>
         <SeatArrangeButtonBeta />
+        <GetDemo />
       </div>
       <StudentToggleList isActive={studentToggleListIsActive} label={activeLabel} />
-        <StudentSelecterBeta isActive={studentSelecterBetaIsActive} label={activeLabel} />
+      <StudentSelecterBeta isActive={studentSelecterBetaIsActive} label={activeLabel} />
+      <GetRecord isActive={historyIsActive} />
     </aside>
   );
 };

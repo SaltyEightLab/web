@@ -4,7 +4,8 @@ import { LayoutContext } from "@/app/page";
 import SeatBeta from "./SeatBeta";
 
 const BeforeDisplay = () => {
-  const students = useContext(StudentContext);
+  const studentsContext = useContext(StudentContext);
+  const students = studentsContext?.students || [];
   const layout = useContext(LayoutContext);
 
   if (!students || !layout) return;

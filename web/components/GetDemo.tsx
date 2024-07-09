@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StudentContext, LayoutContext, isAfterSeatArrangeContext, perfectSeatArrangeModeContext, fixedByGenderModeContext, seatClosestTeacherContext } from "@/app/page";
-import { ForOutputStudent } from "@/types/ForOutputStudent";
 import { IsAfterSeatArrangeContextType } from "@/types/IsAfterSeatArrangeType";
-import { Gender } from "@/types/Gender";
 import { StudentType } from "@/types/StudentType";
 import { EachLabelContext } from "@/context/EachLabelContext";
 
-const GetInfo: React.FC = () => {
+const GetDemo: React.FC = () => {
   const studentsContext = useContext(StudentContext);
+  const students = studentsContext?.students || [];
+  const updateStudents = studentsContext?.updateStudents;
   const layout = useContext(LayoutContext);
   const perfectSeatArrangeMode = useContext(perfectSeatArrangeModeContext);
   const isAfterSeatArrangeContextValue = useContext<IsAfterSeatArrangeContextType | null>(isAfterSeatArrangeContext);
@@ -17,41 +17,53 @@ const GetInfo: React.FC = () => {
 
   const [studentsFromDB, setStudentsFromDB] = useState<StudentType[]>([]);
 
-  
-
   useEffect(() => {
-    if (studentsFromDB && studentsContext) {
-      console.log("Updated studentsFromDB from GetInfo:", studentsFromDB);
-      console.log("studentsContext from GetInfo:", studentsContext);
-      studentsFromDB.forEach((studentFromDB) => {
-        const student = studentsContext.find((s) => s.IDforBackend === studentFromDB.IDforBackend);
-        if (student) {
-          student.name = studentFromDB.name;
-          student.gender = studentFromDB.gender;
-          student.assignedSeat = {
-            from_front: studentFromDB.assignedSeat.from_front,
-            from_right: studentFromDB.assignedSeat.from_right,
+    if (studentsFromDB && students && updateStudents) {
+      const updatedStudents = students.map((student) => {
+        const studentFromDB = studentsFromDB.find((s) => s.IDforBackend === student.IDforBackend);
+        if (studentFromDB) {
+          return {
+            ...student,
+            name: studentFromDB.name,
+            gender: studentFromDB.gender,
+            currentSeat: {
+              from_front: studentFromDB.currentSeat.from_front,
+              from_right: studentFromDB.currentSeat.from_right,
+            },
+            assignedSeat: {
+              from_front: 0,
+              from_right: 0,
+            },
+            prefersFrontRow: studentFromDB.prefersFrontRow,
+            prefersFrontTwoRows: studentFromDB.prefersFrontTwoRows,
+            prefersBackRow: studentFromDB.prefersBackRow,
+            prefersBackTwoRows: studentFromDB.prefersBackTwoRows,
+            prefersLeftColumn: studentFromDB.prefersLeftColumn,
+            prefersRightColumn: studentFromDB.prefersRightColumn,
+            prefersNearTeacher: studentFromDB.prefersNearTeacher,
+            studentsToPlaceNextTo: studentFromDB.studentsToPlaceNextTo,
+            studentsToPlaceWithinTwoSeats: studentFromDB.studentsToPlaceWithinTwoSeats,
+            studentsToPlaceAwayOneSeat: studentFromDB.studentsToPlaceAwayOneSeat,
+            studentsToPlaceAwayTwoSeats: studentFromDB.studentsToPlaceAwayTwoSeats,
           };
-          student.prefersFrontRow = studentFromDB.prefersFrontRow;
-          student.prefersFrontTwoRows = studentFromDB.prefersFrontTwoRows;
-          student.prefersBackRow = studentFromDB.prefersBackRow;
-          student.prefersBackTwoRows = studentFromDB.prefersBackTwoRows;
-          student.prefersLeftColumn = studentFromDB.prefersLeftColumn;
-          student.prefersRightColumn = studentFromDB.prefersRightColumn;
-          student.prefersNearTeacher = studentFromDB.prefersNearTeacher;
-          student.studentsToPlaceNextTo = studentFromDB.studentsToPlaceNextTo;
-          student.studentsToPlaceWithinTwoSeats = studentFromDB.studentsToPlaceWithinTwoSeats;
-          student.studentsToPlaceAwayOneSeat = studentFromDB.studentsToPlaceAwayOneSeat;
-          student.studentsToPlaceAwayTwoSeats = studentFromDB.studentsToPlaceAwayTwoSeats;
         }
+        return student;
       });
+      // 並び替え
+      const columns = layout?.columns || 0;
+      const rows = layout?.rows || 0;
+      updatedStudents.sort((a, b) => {
+        const aPosition = a.currentSeat.from_front * columns + (rows - a.currentSeat.from_right);
+        const bPosition = b.currentSeat.from_front * columns + (rows - b.currentSeat.from_right);
+        return aPosition - bPosition;
+      });
+      updateStudents(updatedStudents);
     }
-    console.log("After studentsContext from GetInfo:", studentsContext);
   }, [studentsFromDB]);
 
-  const getInfo = async () => {
+  const getDemo = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/userdata/e047f972-d5cc-49dc-a76c-24940ec9f71a`, {
+      const response = await fetch(`http://localhost:8081/userdata/hachiman_hachi@icloud.com`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -97,6 +109,9 @@ const GetInfo: React.FC = () => {
       if (decodedData.awayOneSeatsPairs && eachLabelContext && eachLabelContext.setAwayOneSeatsPairs) {
         eachLabelContext.setAwayOneSeatsPairs(decodedData.awayOneSeatsPairs);
       }
+      if (decodedData.awayTwoSeatsPairs && eachLabelContext && eachLabelContext.setAwayTwoSeatsPairs) {
+        eachLabelContext.setAwayTwoSeatsPairs(decodedData.awayTwoSeatsPairs);
+      }
       setStudentsFromDB(decodedData.students);
     } catch (error: unknown) {
       console.error("Error occurred:", error);
@@ -104,10 +119,10 @@ const GetInfo: React.FC = () => {
   };
 
   return (
-    <button className="w-full px-4 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring flex items-center justify-center" onClick={getInfo}>
-      データを受け取る
+    <button className="mt-2 w-full px-4 py-2 text-sm text-white bg-gray-500 rounded hover:bg-black focus:outline-none focus:ring flex items-center justify-center" onClick={getDemo}>
+      DEMOデータで試す
     </button>
   );
 };
 
-export default GetInfo;
+export default GetDemo;

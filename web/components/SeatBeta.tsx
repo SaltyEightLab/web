@@ -68,4 +68,3 @@ const SeatBeta: React.FC<SeatBetaProps> = ({ student }) => {
 };
 
 export default SeatBeta;
-

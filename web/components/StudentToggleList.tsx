@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext, useState, useEffect } from "react";
-import { useSpring, animated } from "react-spring";
 import { StudentContext } from "@/app/page";
 import { Switch } from "@headlessui/react";
 import { Gender } from "@/types/Gender";
@@ -12,7 +11,8 @@ interface StudentToggleListProps {
 }
 
 const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label }) => {
-  const students = useContext(StudentContext); // StudentContextからstudentsを取得
+  const studentsContext = useContext(StudentContext);
+  const students = studentsContext?.students || [];
   const [toggles, setToggles] = useState<boolean[]>([]);
 
   useEffect(() => {
@@ -40,20 +40,6 @@ const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label }
       setToggles(newToggles);
     }
   }, [students, label]);
-
-  const extensionAnimation = useSpring({
-    to: {
-      width: isActive ? "250px" : "0px",
-      opacity: isActive ? 1 : 0,
-      display: isActive ? "block" : "none",
-    },
-    from: {
-      width: "0px",
-      opacity: 0,
-      display: "none",
-    },
-    config: { tension: 500, friction: 50 },
-  });
 
   const handleToggle = (id: number, isChecked: boolean) => {
     if (!students) return; // studentsがnullの場合は何もしない
@@ -94,12 +80,12 @@ const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label }
   }
 
   return (
-    <animated.div style={extensionAnimation} className="bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden">
+    <div className={`ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "250px" : "0px", opacity: isActive ? 1 : 0 }}>
       <h2 className="text-lg font-semibold text-gray-800 mb-4">{label}</h2>
       {students.map((student) => {
         if (student.gender === Gender.IsNotToBeUsed) return null; // GenderがIsNotToBeUsedの場合はスキップ
         return (
-          <animated.div key={student.index} style={{ opacity: extensionAnimation.opacity }}>
+          <div key={student.index} style={{ opacity: isActive ? 1 : 0 }}>
             <li
               className="flex justify-between items-center mb-2 p-2 hover:bg-gray-100 rounded-md transition-colors duration-300 ease-in-out"
               onClick={() => handleToggle(student.index, !toggles[student.index])}
@@ -109,10 +95,10 @@ const StudentToggleList: React.FC<StudentToggleListProps> = ({ isActive, label }
                 <span className={`${toggles[student.index] ? "translate-x-6" : "translate-x-1"} inline-block w-4 h-4 transform bg-white rounded-full transition-transform`} />
               </Switch>
             </li>
-          </animated.div>
+          </div>
         );
       })}
-    </animated.div>
+    </div>
   );
 };
 

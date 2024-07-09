@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, createContext, useEffect, useCallback } from "react";
+import React, { useState, createContext, useEffect, useCallback, useContext } from "react";
 import Sidebar from "@/components/Sidebar";
 import { Gender } from "@/types/Gender";
 import { StudentType } from "@/types/StudentType";
@@ -13,11 +13,16 @@ import SeatClosestTeacherType from "@/types/SeatClosestTeacherType";
 import AfterDisplayBeta from "@/components/AfterDisplayBeta";
 import { SessionProvider } from "next-auth/react";
 import ClientAuthResult from "@/components/ClientAuthResult";
-import GetInfo from "@/components/GetInfo";
 import { EachLabelContextProvider } from "@/context/EachLabelContext";
+import GetDemo from "@/components/GetDemo";
+import GetRecord from "@/components/GetRecord";
+import { EachLabelContext } from "@/context/EachLabelContext";
 
 export const LayoutContext = createContext<LayoutType | null>(null);
-export const StudentContext = createContext<Array<StudentType> | null>(null);
+export const StudentContext = createContext<{
+  students: Array<StudentType>;
+  updateStudents: (updatedStudents: Array<StudentType>) => void;
+} | null>(null);
 export const isAfterSeatArrangeContext = createContext<IsAfterSeatArrangeContextType | null>(null);
 export const perfectSeatArrangeModeContext = createContext<PerfectSeatArrangeModeType | null>(null);
 export const fixedByGenderModeContext = createContext<FixedByGenderModeType | null>(null);
@@ -46,6 +51,10 @@ const Home: React.FC = () => {
   const setGender = useCallback((index: number, gender: Gender) => {
     setStudents((currentStudents) => currentStudents.map((student, i) => (i === index ? { ...student, gender } : student)));
   }, []);
+
+  const updateStudents = (updatedStudents: Array<StudentType>) => {
+    setStudents(updatedStudents);
+  };
 
   useEffect(() => {
     // rowsやcolumnsが変更されたときにseatClosestTeacherFrom_frontとseatClosestTeacherFrom_rightを再計算
@@ -89,26 +98,21 @@ const Home: React.FC = () => {
 
   return (
     <LayoutContext.Provider value={layoutValue}>
-      <StudentContext.Provider value={students}>
+      <StudentContext.Provider value={{ students, updateStudents }}>
         <isAfterSeatArrangeContext.Provider value={isAfterSeatArrangeValue}>
           <perfectSeatArrangeModeContext.Provider value={perfectSeatArrangeModeValue}>
             <fixedByGenderModeContext.Provider value={fixedByGenderModeValue}>
               <seatClosestTeacherContext.Provider value={seatClosestTeacherValue}>
                 <EachLabelContextProvider>
-                  <div className="flex min-h-screen">
-                    <Sidebar />
-                    <main className="flex-1 flex flex-col items-center justify-start p-12">
-                      <GetInfo />
-                      <SessionProvider>
-                        <ClientAuthResult />
-                      </SessionProvider>
-                      <a href="/protected-page" className="p-4 text-blue-600 hover:text-blue-800 transition-colors duration-300">
-                        保護されたページへのリンク
-                      </a>
-                      <BeforeDisplay />
-                      {isAfterSeatArrange && <AfterDisplayBeta />}
-                    </main>
-                  </div>
+                  <SessionProvider>
+                    <div className="flex min-h-screen">
+                      <Sidebar />
+                      <main className="flex-1 flex flex-col items-center justify-start p-12">
+                        <BeforeDisplay />
+                        {isAfterSeatArrange && <AfterDisplayBeta />}
+                      </main>
+                    </div>
+                  </SessionProvider>
                 </EachLabelContextProvider>
               </seatClosestTeacherContext.Provider>
             </fixedByGenderModeContext.Provider>
