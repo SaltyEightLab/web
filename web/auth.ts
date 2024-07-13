@@ -17,6 +17,7 @@ export const config: NextAuthConfig = {
       clientSecret: process.env.AUTH_GOOGLE_SECRET
     })
   ],
+  trustHost: true,
   basePath: "/api/auth",
   callbacks: {
     authorized({ request, auth }) {
