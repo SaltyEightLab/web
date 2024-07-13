@@ -1,6 +1,7 @@
 import React from "react";
 import { SignIn, SignOut } from "./AuthComponents";
 import { auth } from "@/auth";
+import AuthResult from "./AuthResult";
 
 const UserButton: React.FC = async () => {
     const session = await auth();
@@ -15,7 +16,7 @@ const UserButton: React.FC = async () => {
     }
 
     if (!session.user) {
-        return <div>ユーザー情報が取得できませんでした</div>;
+        return <div><AuthResult /></div>;
     }
 
     return (
