@@ -8,12 +8,21 @@ const ClassLayoutConf = () => {
   const layout = useContext(LayoutContext);
   const eachLabelContext = useContext(EachLabelContext);
   const isAfterSeatArrangeContextValue = useContext(isAfterSeatArrangeContext);
+
+  const { rows, columns, setRows, setColumns } = layout;
+
+  useEffect(() => {
+    setNextToPairs([]);
+    setWithInTwoSeatsPairs([]);
+    setAwayOneSeatsPairs([]);
+    setAwayTwoSeatsPairs([]);
+    setIsAfterSeatArrange(false);
+  }, [rows, columns]);
   
-  if (!layout) {  return <div>ロード中...</div>;}
+  // if (!layout) {  return <div>ロード中...</div>;}
   if (!eachLabelContext) {throw new Error("StudentSelecter must be used within a EachLabelContextProvider");}
   if (!isAfterSeatArrangeContextValue) {throw new Error("isAfterSeatArrangeContext is undefined");}
   
-  const { rows, columns, setRows, setColumns } = layout;
   const { nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs, setNextToPairs, setWithInTwoSeatsPairs, setAwayOneSeatsPairs, setAwayTwoSeatsPairs } = eachLabelContext;
   const { isAfterSeatArrange, setIsAfterSeatArrange } = isAfterSeatArrangeContextValue;
 
@@ -30,14 +39,6 @@ const ClassLayoutConf = () => {
       setColumns(value);
     }
   };
-
-  useEffect(() => {
-    setNextToPairs([]);
-    setWithInTwoSeatsPairs([]);
-    setAwayOneSeatsPairs([]);
-    setAwayTwoSeatsPairs([]);
-    setIsAfterSeatArrange(false);
-  }, [rows, columns]);
 
   return (
     <div className="flex items-center py-1 bg-white hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-200 ease-in-out shadow-sm">

@@ -18,7 +18,7 @@ import GetDemo from "@/components/GetDemo";
 import GetRecord from "@/components/GetRecord";
 import { EachLabelContext } from "@/context/EachLabelContext";
 
-export const LayoutContext = createContext<LayoutType | null>(null);
+export const LayoutContext = createContext<LayoutType>({rows: 5, columns: 6, setRows: () => {}, setColumns: () => {}});
 export const StudentContext = createContext<{
   students: Array<StudentType>;
   updateStudents: (updatedStudents: Array<StudentType>) => void;
@@ -26,7 +26,7 @@ export const StudentContext = createContext<{
 export const isAfterSeatArrangeContext = createContext<IsAfterSeatArrangeContextType | null>(null);
 export const perfectSeatArrangeModeContext = createContext<PerfectSeatArrangeModeType | null>(null);
 export const fixedByGenderModeContext = createContext<FixedByGenderModeType | null>(null);
-export const seatClosestTeacherContext = createContext<SeatClosestTeacherType | null>(null);
+export const seatClosestTeacherContext = createContext<SeatClosestTeacherType>({seatClosestTeacherFrom_front: 0, seatClosestTeacherFrom_right: 6, setSeatClosestTeacherFrom_front: () => {}, setSeatClosestTeacherFrom_right: () => {}});
 
 const Home: React.FC = () => {
   const [rows, setRows] = useState(3);
