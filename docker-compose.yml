@@ -18,8 +18,8 @@ services:
       target: base
     ports:
       - 3000:3000
-    environment:
-      - NEXT_PUBLIC_API_SERVER=http://localhost:80/api
+    env_file:
+      - ./web/.env.local  # 追加
     tty: true
     volumes:
       - ./web:/workspace:cached
