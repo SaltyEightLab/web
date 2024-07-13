@@ -15,4 +15,3 @@ const AuthResult = async () => {
 }
 
 export default AuthResult;
-
