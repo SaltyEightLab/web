@@ -9,8 +9,8 @@ const UserButton: React.FC = async () => {
     if (!session) {
         return (
             <div className="flex space-x-4">
-                <SignIn provider="github" label="GitHub" /> {/* GitHubでのサインイン */}
-                <SignIn provider="google" label="Google"/> {/* Googleでのサインインを追加 */}
+                <SignIn provider="github" label="GitHub" />
+                <SignIn provider="google" label="Google"/> 
             </div>
         );
     }
