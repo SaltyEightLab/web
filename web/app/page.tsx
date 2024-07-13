@@ -108,6 +108,7 @@ const Home: React.FC = () => {
                     <div className="flex min-h-screen">
                       <Sidebar />
                       <main className="flex-1 flex flex-col items-center justify-start p-12">
+                        <ClientAuthResult />
                         <BeforeDisplay />
                         {isAfterSeatArrange && <AfterDisplayBeta />}
                       </main>
