@@ -15,7 +15,7 @@ const UserButton: React.FC = async () => {
     }
 
     if (!session.user) {
-        return <div>ユーザー情報がありません</div>;
+        return <div>{process.env.AUTH_GITHUB_ID}</div>;
     }
 
     return (

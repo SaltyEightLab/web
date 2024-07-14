@@ -14,9 +14,6 @@ import AfterDisplayBeta from "@/components/AfterDisplayBeta";
 import { SessionProvider } from "next-auth/react";
 import ClientAuthResult from "@/components/ClientAuthResult";
 import { EachLabelContextProvider } from "@/context/EachLabelContext";
-import GetDemo from "@/components/GetDemo";
-import GetRecord from "@/components/GetRecord";
-import { EachLabelContext } from "@/context/EachLabelContext";
 
 export const LayoutContext = createContext<LayoutType>({rows: 5, columns: 6, setRows: () => {}, setColumns: () => {}});
 export const StudentContext = createContext<{
@@ -57,16 +54,11 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    // rowsやcolumnsが変更されたときにseatClosestTeacherFrom_frontとseatClosestTeacherFrom_rightを再計算
-    // console.log("rows:", rows);
-    // console.log("columns:", columns);
     setSeatClosestTeacherFrom_front(0);
     setSeatClosestTeacherFrom_right(columns - 1);
   }, [rows, columns]);
 
   useEffect(() => {
-    // console.log("rowsForReset:", rows);
-    // console.log("columnsForReset:", columns);
     const newStudents = Array.from({ length: rows * columns }, (_, index) => {
       const from_right = columns - 1 - (index % columns);
       const from_front = Math.floor(index / columns);
@@ -93,7 +85,6 @@ const Home: React.FC = () => {
       };
     });
     setStudents(newStudents);
-    // console.log("newStudents:", newStudents);
   }, [rows, columns, setStudentName, setGender]);
 
   return (

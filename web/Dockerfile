@@ -22,25 +22,3 @@ RUN npm run build
 FROM node:18 AS production
 COPY --from=test-and-build /workspace ./
 CMD ["npm", "run", "start"]
-
-# # Base
-# FROM node:18 AS base
-# WORKDIR /workspace
-# COPY package*.json ./
-# RUN npm ci
-
-# # Build
-# FROM base AS builder
-# COPY . .
-# RUN npm run build
-# RUN npm run test
-
-# # Production stage
-# FROM node:18 AS production
-# WORKDIR /app
-# COPY --from=builder /workspace/.next ./.next
-# COPY --from=builder /workspace/public ./public
-# COPY --from=builder /workspace/package.json ./package.json
-# RUN npm install next
-
-# CMD ["npm", "run", "start"]
