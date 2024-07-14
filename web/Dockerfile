@@ -6,8 +6,9 @@ CMD [ "bash" ]
 FROM base AS test-and-build
 COPY . /workspace
 WORKDIR /workspace
-ARG NEXT_PUBLIC_API_SERVER
-ENV NEXT_PUBLIC_API_SERVER=$NEXT_PUBLIC_API_SERVER
+# ARG NEXT_PUBLIC_API_SERVER
+# ENV NEXT_PUBLIC_API_SERVER=$NEXT_PUBLIC_API_SERVER
+ENV NEXT_PUBLIC_API_SERVER=http://my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api
 ENV AUTH_SECRET=d4275e7218599e57442110dff3487436e3d516ce4f1984ea71aa86d5b4be34f3
 ENV AUTH_URL=http://my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api/auth
 ENV AUTH_GITHUB_ID=Ov23li2yokyvI80xNLKy

@@ -24,7 +24,6 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Header/>
-        {/* <AuthResult /> */}
         <div className="flex min-h-screen border border-solid border-gray-200">
           <main className="flex-1 bg-white text-gray-800">{children}</main>
         </div>
