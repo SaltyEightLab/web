@@ -28,7 +28,7 @@ jobs:
         working-directory: web
     
     steps:
-      - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
+      - uses: actions/checkout@v3
       
       - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
         run: |
