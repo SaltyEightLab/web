@@ -15,46 +15,6 @@ permissions:
 
 
 jobs:
-# nginx Container Build
-## Get Source
-## Build
-## Docker Image Build
-  nginx-build-image:
-    name: nginx Container - Build 
-    runs-on: ubuntu-20.04
-    timeout-minutes: 10
-    defaults: 
-      run:
-        working-directory: nginx
-    
-    steps:
-      - uses: actions/checkout@v3  # GitHubリポジトリのコードをチェックアウト
-      
-      - name: Build an Image  # Dockerイメージをビルド
-        run: |
-          docker image build -t temp_nginx_image_name:latest .
-
-  ## Login AWS
-      - name: Configure AWS credentials  # AWSの認証情報を設定
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWSアクセスキーID
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWSシークレットアクセスキー
-          aws-region: ${{ env.AWS_REGION }}  # AWSのリージョンを設定
-
-      - name: Login to Amazon ECR  # Amazon ECRにログイン
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1  # Amazon ECRログイン用のActionを使用
-
-  ## push image to ECR
-      - name: Push the image to Amazon ECR  # ビルドしたDockerイメージをAmazon ECRにプッシュ
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}  # ECRのレジストリURL
-          ECR_REPOSITORY: ${{ secrets.AWS_ECR_NGINX_SERVER_REPOSITORY }}  # ECRのリポジトリ名
-        run: |
-          docker image tag temp_nginx_image_name:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
 # Web Container Build/Test
 ## Get Source
 ## Build/Test
@@ -144,7 +104,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04 
-    needs: [nginx-build-image, web-test-build-image, api-test-build-image]
+    needs: [web-test-build-image, api-test-build-image]
 
     steps:
       - name: Checkout
@@ -162,19 +122,11 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
 ## Edit Task Definition
-      - name: Fill in the new image ID in the Amazon ECS task definition for nginx
-        id: render-nginx-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: nginx
-          image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_NGINX_SERVER_REPOSITORY }}
-
       - name: Fill in the new image ID in the Amazon ECS task definition for web
         id: render-web-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ steps.render-nginx-task-def.outputs.task-definition }}
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: web
           image: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_WEB_SERVER_REPOSITORY }}
 
