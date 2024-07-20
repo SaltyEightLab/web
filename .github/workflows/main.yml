@@ -6,8 +6,10 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
-  ECS_SERVICE: sacicd-service
-  ECS_CLUSTER: sacicd-cluster
+  ##ECS_SERVICE: sacicd-service
+  ##ECS_CLUSTER: sacicd-cluster
+  ECS_SERVICE: seatarranger-service
+  ECS_CLUSTER: seatarranger-cluster
   ECS_TASK_DEFINITION: .aws/task-definition.json
 
 permissions:
