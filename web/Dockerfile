@@ -10,6 +10,7 @@ WORKDIR /workspace
 # ENV NEXT_PUBLIC_API_SERVER=$NEXT_PUBLIC_API_SERVER
 # ENV NEXT_PUBLIC_API_SERVER=http://my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api
 ENV NEXT_PUBLIC_API_SERVER=http://www.sekigae-machine.jp/api
+ENV NEXT_PUBLIC_USERDATA_SERVER=http://www.sekigae-machine.jp
 RUN npm ci
 RUN npm run test
 RUN npm run build

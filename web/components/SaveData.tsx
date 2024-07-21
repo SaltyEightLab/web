@@ -53,7 +53,7 @@ const SaveData = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:8081/userdata/save`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_USERDATA_SERVER}/userdata/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

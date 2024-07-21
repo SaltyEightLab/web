@@ -81,7 +81,7 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
 
   const getRecord = async (page: number) => {
     try {
-      const response = await fetch(`http://localhost:8081/userdata/${session?.user?.email}/paged?page=${page}&size=${size}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_USERDATA_SERVER}/userdata/${session?.user?.email}/paged?page=${page}&size=${size}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

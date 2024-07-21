@@ -63,7 +63,7 @@ const GetDemo: React.FC = () => {
 
   const getDemo = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/userdata/hachiman_hachi@icloud.com`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_USERDATA_SERVER}/userdata/hachiman_hachi@icloud.com`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
