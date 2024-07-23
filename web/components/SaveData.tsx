@@ -53,6 +53,7 @@ const SaveData = () => {
     };
 
     try {
+      // await registerUserIfNotExists();
       const response = await fetch(`${process.env.NEXT_PUBLIC_USERDATA_SERVER}/userdata/save`, {
         method: "POST",
         headers: {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, createContext, useEffect, useCallback, useContext } from "react";
+import React, { useState, createContext, useEffect, useCallback } from "react";
 import Sidebar from "@/components/Sidebar";
 import { Gender } from "@/types/Gender";
 import { StudentType } from "@/types/StudentType";
@@ -12,7 +12,6 @@ import FixedByGenderModeType from "@/types/FixedByGenderModeType";
 import SeatClosestTeacherType from "@/types/SeatClosestTeacherType";
 import AfterDisplayBeta from "@/components/AfterDisplayBeta";
 import { SessionProvider } from "next-auth/react";
-import ClientAuthResult from "@/components/ClientAuthResult";
 import { EachLabelContextProvider } from "@/context/EachLabelContext";
 
 export const LayoutContext = createContext<LayoutType>({rows: 5, columns: 6, setRows: () => {}, setColumns: () => {}});
@@ -99,7 +98,6 @@ const Home: React.FC = () => {
                     <div className="flex min-h-screen">
                       <Sidebar />
                       <main className="flex-1 flex flex-col items-center justify-start p-12">
-                        {/* <ClientAuthResult /> */}
                         <BeforeDisplay />
                         {isAfterSeatArrange && <AfterDisplayBeta />}
                       </main>
