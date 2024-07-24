@@ -165,14 +165,13 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
   }, [isActive]);
 
   return (
-    <div className={` ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "380px" : "0px", opacity: isActive ? 1 : 0 }}>
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{status === "authenticated" ? `【${session?.user?.name}さん】の席替え履歴` : '席替え履歴'}</h2>
+    <div className={` ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "290px" : "0px", opacity: isActive ? 1 : 0 }}>
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">{status === "authenticated" ? `${session?.user?.name}さんの履歴` : '席替え履歴'}</h2>
       {data.length > 0 ? (
         <ul>
           {data.map((item, index) => (
             <li key={index} className="flex justify-between items-center">
-              <span className="mr-2">{item["id"]}</span>
-              <span className="mr-2">{item["dataDate"]}</span>
+              <span className="mr-2">{new Date(item["dataDate"]).toLocaleString()}</span> {/* 日付を一般的な表記に変換 */}
               <div>
                 <button className="text-blue-500 mr-2" onClick={() => getDemo(index, "before")}>
                   Before
