@@ -26,7 +26,6 @@ export default function RootLayout({
         <meta name="keywords" content="席替え, 教育, 自動化, 教師, アプリ, 効率化, 働き方改革, 保存, 復元, 履歴, １クリック, 全自動, 自動" />
         <meta name="author" content="SaltyEightLab" />
       </head>
-      <GoogleAnalytics gaId="G-0J30810ZWJ" />
       <body className={inter.className}>
         <Header/>
         <div className="flex min-h-screen border border-solid border-gray-200">
@@ -34,6 +33,7 @@ export default function RootLayout({
         </div>
         <Footer /> 
       </body>
+      <GoogleAnalytics gaId="G-0J30810ZWJ" />
     </html>
   );
 }
