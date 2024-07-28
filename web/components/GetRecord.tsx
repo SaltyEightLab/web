@@ -192,7 +192,7 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
   }, [isActive]);
 
   return (
-    <div className={` ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "320px" : "0px", opacity: isActive ? 1 : 0 }}>
+    <div className={` ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "330px" : "0px", opacity: isActive ? 1 : 0 }}>
       <h2 className="text-lg font-semibold text-gray-800 mb-4">{status === "authenticated" ? `${session?.user?.name}さんの履歴` : "席替え履歴"}</h2>
       {data.length > 0 ? (
         <ul>
@@ -207,7 +207,7 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
                   After
                 </button>
                 <button className="text-red-500" onClick={() => deleteData(index)}>
-                  削除
+                  ⌫
                 </button>
               </div>
             </li>
