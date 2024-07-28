@@ -17,7 +17,7 @@ const Header = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          使い方を見る
+          使い方
         </Link>
         <UserButton />
       </div>

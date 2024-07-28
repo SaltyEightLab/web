@@ -76,6 +76,7 @@ const GetDemo: React.FC = () => {
 
       const data = await response.json();
       // console.log("Received raw data:", data);
+      console.log("Received data:", data[0].hashValue);
       let decodedData;
       if (data.length > 0 && data[0].jsonData) {
         decodedData = JSON.parse(data[0].jsonData);

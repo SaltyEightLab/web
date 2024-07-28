@@ -32,6 +32,7 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
     id: string;
     dataDate: string;
     jsonData?: string; // jsonData プロパティをオプションとして定義
+    hashValue?: string;
   }
 
   useEffect(() => {
@@ -148,9 +149,35 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
         }
         setStudentsFromDB(decodedData.students);
         setLabel(label);
+        console.log("Received data:", data[index].hashValue);
       }
     } catch (error: unknown) {
       console.error("Error occurred:", error);
+    }
+  };
+
+  const deleteData = async (index: number) => {
+    try {
+      if (data[index] && data[index].hashValue) {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_USERDATA_SERVER}/userdata/delete/${data[index].hashValue}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // 削除が成功したら、データを再取得して表示を更新
+        await getRecord(page);
+        console.log("Data deleted successfully");
+      } else {
+        console.error("No hash value found for the selected item");
+      }
+    } catch (error) {
+      console.error("Error deleting data:", error);
     }
   };
 
@@ -165,8 +192,8 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
   }, [isActive]);
 
   return (
-    <div className={` ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "290px" : "0px", opacity: isActive ? 1 : 0 }}>
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">{status === "authenticated" ? `${session?.user?.name}さんの履歴` : '席替え履歴'}</h2>
+    <div className={` ml-5 bg-white flex-shrink-0 z-50 p-4 rounded-r-lg overflow-hidden ${isActive ? "block" : "hidden"}`} style={{ width: isActive ? "320px" : "0px", opacity: isActive ? 1 : 0 }}>
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">{status === "authenticated" ? `${session?.user?.name}さんの履歴` : "席替え履歴"}</h2>
       {data.length > 0 ? (
         <ul>
           {data.map((item, index) => (
@@ -176,19 +203,20 @@ const GetRecord: React.FC<getRecordProps> = ({ isActive }) => {
                 <button className="text-blue-500 mr-2" onClick={() => getDemo(index, "before")}>
                   Before
                 </button>
-                <button className="text-green-500" onClick={() => getDemo(index, "after")}>
+                <button className="text-green-500 mr-2" onClick={() => getDemo(index, "after")}>
                   After
+                </button>
+                <button className="text-red-500" onClick={() => deleteData(index)}>
+                  削除
                 </button>
               </div>
             </li>
           ))}
         </ul>
+      ) : status === "unauthenticated" ? (
+        <p>ログインしたユーザーのみ使える機能です。</p>
       ) : (
-        status === "unauthenticated" ? (
-          <p>ログインしたユーザーのみ使える機能です。</p>
-        ) : (
-          <p>保存されたデータがありません。</p>
-        )
+        <p>保存されたデータがありません。</p>
       )}
       <div className="flex justify-center w-full mt-2 space-x-2">
         {page > 0 && (

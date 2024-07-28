@@ -49,7 +49,7 @@ const SaveData = () => {
             studentsToPlaceAwayTwoSeats: student.studentsToPlaceAwayTwoSeats.map((s) => ({ name: s.name, IDforBackend: s.IDforBackend })),
           }))
           .filter((student) => student.gender !== Gender.IsNotToBeUsed),
-      }),
+      })
     };
 
     try {

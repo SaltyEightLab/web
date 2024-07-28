@@ -90,9 +90,9 @@ const SeatArrangeButtonBeta: React.FC = () => {
           body: JSON.stringify(dataToSend),
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //   throw new Error(`HTTP error! status: ${response.status}`);
+        // }
 
         const result: ForOutputStudent[] = await response.json();
         // console.log("Received data:", result);
@@ -115,7 +115,7 @@ const SeatArrangeButtonBeta: React.FC = () => {
         errorCount++;
         // console.error(`Error during seat arrangement (attempt ${errorCount}):`, error);
         if (errorCount >= maxRetries) {
-          console.error("Max retries reached. Aborting.");
+          // console.error("Max retries reached. Aborting.");
           alert("席替えに失敗しました。席替えの条件に競合があるか、条件の組み合わせが難しい可能性があります。後者の場合、再試行によって成功する可能性があります。");
         }
       }
@@ -126,14 +126,6 @@ const SeatArrangeButtonBeta: React.FC = () => {
     <button className="w-full px-4 py-2 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring flex items-center justify-center" onClick={seatArrange}>
       席替えをする
     </button>
-    // <div className="flex flex-col px-4 py-1 rounded-md items-center justify-center bg-gray-100">
-    //   <button className="mb-2 px-4 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring" onClick={seatArrange}>
-    //     SeatArrangeBeta
-    //   </button>
-    //   <button className="px-4 py-1 text-sm text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:ring" onClick={() => console.log(nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs)}>
-    //     Pairを出力
-    //   </button>
-    // </div>
   );
 };
 
