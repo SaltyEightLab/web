@@ -10,8 +10,8 @@ const Footer = () => {
             <a href="https://x.com/SaltyEightLab" target="_blank" rel="noopener noreferrer">
                 <img src="/footerIcon/XlogoBig.png" alt="X Logo" className="h-12 w-12" />
             </a>
-            <a href="https://note.com" target="_blank" rel="noopener noreferrer">
-                <img src="/footerIcon/notelogoBig.png" alt="Note Logo" className="h-12 w-12" />
+            <a href="https://qiita.com/SaltyEight" target="_blank" rel="noopener noreferrer">
+                <img src="/footerIcon/qiitalogo.png" alt="Qiita Logo" className="h-8 w-8" />
             </a>
         </footer>
     );

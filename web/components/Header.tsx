@@ -12,6 +12,14 @@ const Header = () => {
       </div>
       <div className="flex-1 flex justify-end items-center">
         <Link 
+          href="https://forms.gle/n9tHRJaykzk6r7PH7" 
+          className="mr-4 text-sm font-bold text-gray-600 hover:text-gray-800"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          フィードバック
+        </Link>
+        <Link 
           href="https://qiita.com/SaltyEight/items/c47b32b979c35be05e18" 
           className="mr-4 text-sm font-bold text-gray-600 hover:text-gray-800"
           target="_blank"
