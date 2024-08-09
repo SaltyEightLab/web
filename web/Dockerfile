@@ -6,10 +6,9 @@ CMD [ "bash" ]
 FROM base AS test-and-build
 COPY . /workspace
 WORKDIR /workspace
-# ARG NEXT_PUBLIC_API_SERVER
-# ENV NEXT_PUBLIC_API_SERVER=$NEXT_PUBLIC_API_SERVER
-# ENV NEXT_PUBLIC_API_SERVER=http://my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api
-ENV NEXT_PUBLIC_API_SERVER=https://sekigae-machine.jp/api
+ARG NEXT_PUBLIC_API_SERVER
+ENV NEXT_PUBLIC_API_SERVER=$NEXT_PUBLIC_API_SERVER
+# ENV NEXT_PUBLIC_API_SERVER=https://sekigae-machine.jp/api
 ENV NEXT_PUBLIC_USERDATA_SERVER=https://sekigae-machine.jp
 RUN npm ci
 RUN npm run test

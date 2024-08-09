@@ -31,9 +31,15 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Build an Image and Run Tests  # Dockerイメージをビルドし、テストを実行
+        env:
+          NEXT_PUBLIC_API_SERVER: ${{ secrets.NEXT_PUBLIC_API_SERVER }}
+
         run: |
-          docker image build --target production -t temp_web_image_name:latest .
-# docker image build --target production -t temp_web_image_name:latest --build-arg NEXT_PUBLIC_API_SERVER=http://my-app-sacicd-alb-210697540.ap-northeast-1.elb.amazonaws.com/api .
+            docker image build \
+            --build-arg NEXT_PUBLIC_API_SERVER="${NEXT_PUBLIC_API_SERVER}" \
+            --target production -t temp_web_image_name:latest .
+# docker image build --target production -t temp_web_image_name:latest .
+
 ## Login AWS
       - name: Configure AWS credentials  # AWSの認証情報を設定
         uses: aws-actions/configure-aws-credentials@v1
