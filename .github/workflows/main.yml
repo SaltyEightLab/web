@@ -34,13 +34,13 @@ jobs:
         env:
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
-          AUTH_GOOGLE_SECTET: ${{ secrets.AUTH_GOOGLE_SECTET }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
 
         run: |
             docker image build \
             --build-arg AUTH_SECRET="${AUTH_SECRET}" \
             --build-arg AUTH_GOOGLE_ID="${AUTH_GOOGLE_ID}" \
-            --build-arg AUTH_GOOGLE_SECTET="${AUTH_GOOGLE_SECTET}" \
+            --build-arg AUTH_GOOGLE_SECRET="${AUTH_GOOGLE_SECRET}" \
             --target production -t temp_web_image_name:latest .
 # docker image build --target production -t temp_web_image_name:latest .
 
