@@ -3,28 +3,21 @@ import { StudentContext, LayoutContext, isAfterSeatArrangeContext, perfectSeatAr
 import { ForOutputStudent } from "@/types/ForOutputStudent";
 import { IsAfterSeatArrangeContextType } from "@/types/IsAfterSeatArrangeType";
 import { Gender } from "@/types/Gender";
-import { EachLabelContext } from "@/context/EachLabelContext";
 
 const SeatArrangeButtonBeta: React.FC = () => {
   const studentsContext = useContext(StudentContext);
   const students = studentsContext?.students || [];
-  const updateStudents = studentsContext?.updateStudents;
   const layout = useContext(LayoutContext);
   const perfectSeatArrangeMode = useContext(perfectSeatArrangeModeContext);
   const isAfterSeatArrangeContextValue = useContext<IsAfterSeatArrangeContextType | null>(isAfterSeatArrangeContext);
   const fixedByGenderMode = useContext(fixedByGenderModeContext);
   const seatClosestTeacher = useContext(seatClosestTeacherContext);
-  const eachLabelContext = useContext(EachLabelContext);
 
-  if (!eachLabelContext) {
-    throw new Error("StudentSelecter must be used within a EachLabelContextProvider");
-  }
   if (!isAfterSeatArrangeContextValue) {
     throw new Error("isAfterSeatArrangeContext is undefined");
   }
   if (!students || !layout || !perfectSeatArrangeMode || !fixedByGenderMode || !seatClosestTeacher) return;
 
-  const { nextToPairs, withInTwoSeatsPairs, awayOneSeatsPairs, awayTwoSeatsPairs, setNextToPairs, setWithInTwoSeatsPairs, setAwayOneSeatsPairs, setAwayTwoSeatsPairs } = eachLabelContext;
   const setIsAfterSeatArrange = isAfterSeatArrangeContextValue.setIsAfterSeatArrange;
 
   const studentsOnSeatNotToBeUsed = students.filter((student) => student.gender === Gender.IsNotToBeUsed);
